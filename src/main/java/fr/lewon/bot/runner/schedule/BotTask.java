@@ -1,6 +1,7 @@
 package fr.lewon.bot.runner.schedule;
 
 import fr.lewon.bot.runner.lifecycle.bot.BotState;
+import fr.lewon.bot.runner.lifecycle.task.TaskState;
 import fr.lewon.bot.runner.util.BeanUtil;
 import fr.lewon.bot.runner.util.BotTaskScheduler;
 import org.springframework.scheduling.Trigger;
@@ -14,7 +15,7 @@ public abstract class BotTask implements Trigger, Runnable {
 
     private long executionTimeMillis = System.currentTimeMillis();
     private long delayMillis;
-    private BotState botState = BotState.PENDING;
+    private TaskState state = TaskState.PENDING;
 
     private TaskResult taskResult;
 
@@ -26,10 +27,6 @@ public abstract class BotTask implements Trigger, Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public BotState getBotState() {
-        return this.botState;
     }
 
     public long getMillisUntilExec() {
@@ -52,8 +49,8 @@ public abstract class BotTask implements Trigger, Runnable {
 
     @Override
     public Date nextExecutionTime(TriggerContext triggerContext) {
-        if (this.botState == BotState.PENDING) {
-            this.botState = BotState.ACTIVE;
+        if (this.state == TaskState.PENDING) {
+            this.state = TaskState.ACTIVE;
             return new Date();
         }
         if (this.taskResult != null && this.taskResult.getTasksToCreate() != null) {
@@ -63,7 +60,7 @@ public abstract class BotTask implements Trigger, Runnable {
             this.delayMillis = this.taskResult.getDelay().getDelayMillis();
             return new Date(this.executionTimeMillis + this.delayMillis);
         }
-        this.botState = BotState.STOPPED;
+        this.state = TaskState.DISPOSED;
         return null;
     }
 }

@@ -6,8 +6,7 @@ import fr.lewon.bot.runner.lifecycle.Transition;
 public enum TaskOperation implements IOperation<TaskState> {
 
     START,
-    STOP,
-    TOGGLE_PAUSE;
+    STOP;
 
     private final Transition<TaskState>[] transitions;
 

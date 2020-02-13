@@ -10,22 +10,25 @@ import fr.lewon.bot.runner.util.BotTaskScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
-public abstract class Bot {
+public class Bot {
 
     private static final BotTaskScheduler botTaskScheduler = BeanUtil.getBean(BotTaskScheduler.class);
 
+    private Supplier<List<BotTask>> initialTasksSupplier;
     private List<BotTask> tasks = new ArrayList<>();
     private BotState state = BotState.PENDING;
     private BotPropertyStore botPropertyStore;
 
-    public Bot(BotPropertyStore botPropertyStore) {
+    public Bot(BotPropertyStore botPropertyStore, Supplier<List<BotTask>> initialTasksSupplier) {
         this.botPropertyStore = botPropertyStore;
+        this.initialTasksSupplier = initialTasksSupplier;
     }
 
     public void start() throws InvalidOperationException {
         this.state = BotOperation.START.getResultingState(this.state);
-        this.tasks.addAll(this.getInitialTasks());
+        this.tasks.addAll(initialTasksSupplier.get());
         botTaskScheduler.startTaskAutoExecution(this.tasks);
     }
 
@@ -33,10 +36,6 @@ public abstract class Bot {
         this.state = BotOperation.STOP.getResultingState(this.state);
         botTaskScheduler.cancelTaskAutoExecution(this.tasks);
         this.tasks.clear();
-    }
-
-    public void togglePause(boolean isPaused) throws InvalidOperationException {
-        this.state = BotOperation.TOGGLE_PAUSE.getResultingState(this.state);
     }
 
     public void kill() throws InvalidOperationException {
@@ -50,8 +49,5 @@ public abstract class Bot {
     public BotPropertyStore getBotPropertyStore() {
         return this.botPropertyStore;
     }
-
-
-    protected abstract List<BotTask> getInitialTasks();
 
 }

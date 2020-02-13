@@ -41,12 +41,6 @@ public class App {
         new Thread(() -> {
             try {
                 Thread.sleep(10000);
-                bot.togglePause(true);
-                System.out.println("BOT PAUSED");
-                Thread.sleep(10000);
-                bot.togglePause(false);
-                System.out.println("BOT RESUMED");
-                Thread.sleep(10000);
                 bot.stop();
                 System.out.println("BOT STOPPED");
             } catch (Exception e) {
@@ -90,11 +84,19 @@ class TaskDisplayTimers extends BotTask {
 
 class TaskExample extends BotTask {
 
+    private long lastExec = System.currentTimeMillis();
     private long delay = 0;
 
     public TaskExample() {
         new Thread(() -> {
-
+            while (true) {
+                System.out.print(System.currentTimeMillis() - lastExec + " / " + delay + "                     " + "\r");
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }).start();
     }
 
@@ -105,6 +107,7 @@ class TaskExample extends BotTask {
 
     @Override
     protected TaskResult doExecute() throws Exception {
+        lastExec = System.currentTimeMillis();
         this.delay = new Random().nextInt(5000);
         return new TaskResult(new Delay(this.delay));
     }

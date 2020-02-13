@@ -4,7 +4,6 @@ public enum BotState {
 
     PENDING,
     ACTIVE,
-    PAUSED,
     STOPPED,
     KILLED
 

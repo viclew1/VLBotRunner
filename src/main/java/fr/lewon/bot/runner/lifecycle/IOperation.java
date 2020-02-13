@@ -2,7 +2,7 @@ package fr.lewon.bot.runner.lifecycle;
 
 import fr.lewon.bot.runner.errors.InvalidOperationException;
 
-public interface IOperation<T> extends ITransitionStore<T> {
+public interface IOperation<T> {
 
     default T getResultingState(T initialState) throws InvalidOperationException {
         for (Transition<T> transition : this.getTransitions()) {
@@ -12,7 +12,9 @@ public interface IOperation<T> extends ITransitionStore<T> {
                 }
             }
         }
-        throw new InvalidOperationException(this, initialState);
+        throw new InvalidOperationException(this, initialState.toString());
     }
+
+    Transition<T>[] getTransitions();
 
 }
