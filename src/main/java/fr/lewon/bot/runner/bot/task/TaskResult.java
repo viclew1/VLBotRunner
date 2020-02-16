@@ -1,12 +1,12 @@
-package fr.lewon.bot.runner.schedule;
+package fr.lewon.bot.runner.bot.task;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskResult {
 
-    private Delay delay;
-    private List<BotTask> tasksToCreate;
+    private final Delay delay;
+    private final List<BotTask> tasksToCreate;
 
     public TaskResult() {
         this((Delay) null);
@@ -29,15 +29,8 @@ public class TaskResult {
         return this.delay;
     }
 
-    public void setDelay(Delay delay) {
-        this.delay = delay;
-    }
-
     public List<BotTask> getTasksToCreate() {
         return this.tasksToCreate;
     }
 
-    public void setTasksToCreate(List<BotTask> tasksToCreate) {
-        this.tasksToCreate = tasksToCreate;
-    }
 }

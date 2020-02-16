@@ -2,12 +2,11 @@ package fr.lewon.bot.runner;
 
 import fr.lewon.bot.runner.bot.AbstractBotBuilder;
 import fr.lewon.bot.runner.bot.Bot;
+import fr.lewon.bot.runner.bot.task.BotTask;
+import fr.lewon.bot.runner.bot.task.Delay;
+import fr.lewon.bot.runner.bot.task.TaskResult;
 import fr.lewon.bot.runner.errors.InvalidBotPropertyValueException;
 import fr.lewon.bot.runner.errors.InvalidOperationException;
-import fr.lewon.bot.runner.schedule.BotTask;
-import fr.lewon.bot.runner.schedule.Delay;
-import fr.lewon.bot.runner.schedule.TaskResult;
-import fr.lewon.bot.runner.util.BeanUtil;
 import fr.lewon.bot.runner.util.BotTaskScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -40,7 +39,7 @@ public class App {
         System.out.println("BOT STARTED");
         new Thread(() -> {
             try {
-                Thread.sleep(10000);
+                Thread.sleep(30000);
                 bot.stop();
                 System.out.println("BOT STOPPED");
             } catch (Exception e) {
@@ -59,12 +58,20 @@ class BotBuilderExample extends AbstractBotBuilder {
 
     @Override
     protected List<BotTask> getInitialTasks() {
+        TaskExample t = new TaskExample();
         return Arrays.asList(
-                new TaskExample());
+                t,
+                new TaskDisplayTimers(t));
     }
 }
 
 class TaskDisplayTimers extends BotTask {
+
+    private TaskExample task;
+
+    public TaskDisplayTimers(TaskExample task) {
+        this.task = task;
+    }
 
     @Override
     public String getLabel() {
@@ -73,31 +80,18 @@ class TaskDisplayTimers extends BotTask {
 
     @Override
     protected TaskResult doExecute() throws Exception {
-        System.out.println("---------");
-        for (BotTask t : BeanUtil.getBean(BotTaskScheduler.class).getTasks()) {
-            System.out.println(t.getLabel() + "\t - " + t.getMillisUntilExec());
+        if (this.task.getExecutionTimeMillis() != null) {
+            System.out.print(System.currentTimeMillis() - this.task.getExecutionTimeMillis() + " / " + this.task.getDelay() + "                     " + "\r");
         }
-        System.out.println("---------");
-        return new TaskResult(new Delay(1000));
+        return new TaskResult(new Delay(10));
     }
 }
 
 class TaskExample extends BotTask {
 
-    private long lastExec = System.currentTimeMillis();
     private long delay = 0;
 
     public TaskExample() {
-        new Thread(() -> {
-            while (true) {
-                System.out.print(System.currentTimeMillis() - lastExec + " / " + delay + "                     " + "\r");
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
 
     @Override
@@ -106,9 +100,12 @@ class TaskExample extends BotTask {
     }
 
     @Override
-    protected TaskResult doExecute() throws Exception {
-        lastExec = System.currentTimeMillis();
+    protected TaskResult doExecute() {
         this.delay = new Random().nextInt(5000);
         return new TaskResult(new Delay(this.delay));
+    }
+
+    public long getDelay() {
+        return this.delay;
     }
 }

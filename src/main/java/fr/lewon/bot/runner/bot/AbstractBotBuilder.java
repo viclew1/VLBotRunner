@@ -2,8 +2,8 @@ package fr.lewon.bot.runner.bot;
 
 import fr.lewon.bot.runner.bot.props.BotPropertyDescriptor;
 import fr.lewon.bot.runner.bot.props.BotPropertyStore;
+import fr.lewon.bot.runner.bot.task.BotTask;
 import fr.lewon.bot.runner.errors.InvalidBotPropertyValueException;
-import fr.lewon.bot.runner.schedule.BotTask;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,9 +32,10 @@ public abstract class AbstractBotBuilder {
         for (Map.Entry<BotPropertyDescriptor, String> e : appliedProperties.entrySet()) {
             botPropertyStore.addProperty(e.getKey(), e.getValue());
         }
-        return new Bot(botPropertyStore, () -> getInitialTasks());
+        return new Bot(botPropertyStore, (b) -> this.getInitialTasks(b));
     }
 
-    protected abstract List<BotTask> getInitialTasks();
+
+    protected abstract List<BotTask> getInitialTasks(Bot bot);
 
 }

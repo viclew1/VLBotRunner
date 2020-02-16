@@ -1,4 +1,4 @@
-package fr.lewon.bot.runner.schedule;
+package fr.lewon.bot.runner.bot.task;
 
 import java.util.concurrent.TimeUnit;
 

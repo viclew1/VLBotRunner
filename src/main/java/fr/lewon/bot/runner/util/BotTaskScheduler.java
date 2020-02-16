@@ -1,6 +1,6 @@
 package fr.lewon.bot.runner.util;
 
-import fr.lewon.bot.runner.schedule.BotTask;
+import fr.lewon.bot.runner.bot.task.BotTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;

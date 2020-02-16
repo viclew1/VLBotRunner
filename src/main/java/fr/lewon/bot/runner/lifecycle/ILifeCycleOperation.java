@@ -2,7 +2,7 @@ package fr.lewon.bot.runner.lifecycle;
 
 import fr.lewon.bot.runner.errors.InvalidOperationException;
 
-public interface IOperation<T> {
+public interface ILifeCycleOperation<T> {
 
     default T getResultingState(T initialState) throws InvalidOperationException {
         for (Transition<T> transition : this.getTransitions()) {

@@ -1,11 +1,11 @@
 package fr.lewon.bot.runner.lifecycle.bot;
 
-import fr.lewon.bot.runner.lifecycle.IOperation;
+import fr.lewon.bot.runner.lifecycle.ILifeCycleOperation;
 import fr.lewon.bot.runner.lifecycle.Transition;
 
 import static fr.lewon.bot.runner.lifecycle.bot.BotState.*;
 
-public enum BotOperation implements IOperation<BotState> {
+public enum BotLifeCycleOperation implements ILifeCycleOperation<BotState> {
 
     START(new Transition<>(ACTIVE, PENDING, STOPPED)),
     STOP(new Transition<>(STOPPED, ACTIVE)),
@@ -13,7 +13,7 @@ public enum BotOperation implements IOperation<BotState> {
 
     private Transition<BotState>[] possibleTransitions;
 
-    BotOperation(Transition... possibleTransitions) {
+    BotLifeCycleOperation(Transition... possibleTransitions) {
         this.possibleTransitions = possibleTransitions;
     }
 

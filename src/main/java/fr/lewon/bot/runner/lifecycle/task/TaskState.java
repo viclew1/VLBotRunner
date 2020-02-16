@@ -4,6 +4,7 @@ public enum TaskState {
 
     PENDING,
     ACTIVE,
-    DISPOSED
+    DISPOSED,
+    CRASHED
 
 }
