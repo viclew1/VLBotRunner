@@ -1,5 +1,6 @@
 package fr.lewon.bot.runner.bot.operation;
 
+import fr.lewon.bot.runner.bot.Bot;
 import fr.lewon.bot.runner.bot.props.BotPropertyDescriptor;
 import fr.lewon.bot.runner.bot.props.BotPropertyStore;
 
@@ -13,8 +14,12 @@ public abstract class BotOperation {
         this.label = label;
     }
 
-    public abstract List<BotPropertyDescriptor> getNeededProperties();
+    public String getLabel() {
+        return this.label;
+    }
 
-    public abstract void run(BotPropertyStore botPropertyStore, BotPropertyStore paramsPropertyStore) throws Exception;
+    public abstract List<BotPropertyDescriptor> getNeededProperties(Bot bot);
+
+    public abstract Object run(Bot bot, BotPropertyStore paramsPropertyStore) throws Exception;
 
 }

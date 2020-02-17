@@ -1,33 +1,26 @@
 package fr.lewon.bot.runner.bot.props;
 
-import fr.lewon.bot.runner.errors.InvalidBotPropertyValueException;
-
 import java.util.HashMap;
-import java.util.Map;
 
-public class BotPropertyStore {
+public class BotPropertyStore extends HashMap<BotPropertyDescriptor, Object> {
 
-    private Map<BotPropertyDescriptor, Object> properties;
+    private static final long serialVersionUID = 8101778657485578888L;
 
     public BotPropertyStore() {
-        this.properties = new HashMap<>();
     }
 
     public BotPropertyStore(BotPropertyStore botPropertyStore) {
-        this.properties = new HashMap<>(botPropertyStore.properties);
+        super(botPropertyStore);
     }
 
-    public Object getProperty(String key) {
-        return this.getProperty(this.properties.keySet().stream()
+    public Object getByKey(String key) {
+        return this.get(this.keySet().stream()
                 .filter(p -> p.getKey().equals(key))
                 .findFirst().orElse(null));
     }
 
-    public Object getProperty(BotPropertyDescriptor key) {
-        return this.properties.get(key);
+    public void addProperty(BotPropertyDescriptor key, Object value) {
+        this.put(key, value);
     }
 
-    public void addProperty(BotPropertyDescriptor key, String value) throws InvalidBotPropertyValueException {
-        this.properties.put(key, key.parse(value));
-    }
 }

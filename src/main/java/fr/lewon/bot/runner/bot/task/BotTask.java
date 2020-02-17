@@ -1,11 +1,12 @@
 package fr.lewon.bot.runner.bot.task;
 
 import fr.lewon.bot.runner.bot.Bot;
-import fr.lewon.bot.runner.bot.props.BotPropertyStore;
 import fr.lewon.bot.runner.lifecycle.task.TaskLifeCycleOperation;
 import fr.lewon.bot.runner.lifecycle.task.TaskState;
 import fr.lewon.bot.runner.util.BeanUtil;
 import fr.lewon.bot.runner.util.BotTaskScheduler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.TriggerContext;
 
@@ -13,6 +14,7 @@ import java.util.Date;
 
 public abstract class BotTask implements Trigger, Runnable {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BotTask.class);
     private static final BotTaskScheduler botTaskScheduler = BeanUtil.getBean(BotTaskScheduler.class);
 
     private Bot bot;
@@ -27,11 +29,11 @@ public abstract class BotTask implements Trigger, Runnable {
     @Override
     public final void run() {
         try {
-            this.taskResult = this.doExecute(this.bot.getBotPropertyStore());
+            this.taskResult = this.doExecute(this.bot);
             this.executionTimeMillis = System.currentTimeMillis();
         } catch (Exception e) {
-            e.printStackTrace();
             this.state = TaskState.CRASHED;
+            LOGGER.error("An error occurred while processing [" + this.getClass().getCanonicalName() + "]", e);
         }
     }
 
@@ -45,11 +47,11 @@ public abstract class BotTask implements Trigger, Runnable {
     /**
      * Executes the bot task and returns the delay until next execution in millis
      *
-     * @param botPropertyStore
+     * @param bot
      * @return
      * @throws Exception
      */
-    protected abstract TaskResult doExecute(BotPropertyStore botPropertyStore) throws Exception;
+    protected abstract TaskResult doExecute(Bot bot) throws Exception;
 
     @Override
     public Date nextExecutionTime(TriggerContext triggerContext) {
@@ -69,7 +71,7 @@ public abstract class BotTask implements Trigger, Runnable {
             }
             this.state = TaskLifeCycleOperation.STOP.getResultingState(this.state);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("An error occurred while fetching next [" + this.getClass().getCanonicalName() + "] execution time", e);
             this.state = TaskState.CRASHED;
         }
         return null;

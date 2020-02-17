@@ -1,7 +1,5 @@
 package fr.lewon.bot.runner.bot.props;
 
-import fr.lewon.bot.runner.errors.InvalidBotPropertyValueException;
-
 import java.util.Arrays;
 
 public class BotPropertyDescriptor {
@@ -50,36 +48,6 @@ public class BotPropertyDescriptor {
 
     public Object getDefaultValue() {
         return this.defaultValue;
-    }
-
-    public Object parse(String value) throws InvalidBotPropertyValueException {
-        if (value == null || value.isBlank()) {
-            if (this.nullable) {
-                return null;
-            }
-            if (!this.needed) {
-                return this.defaultValue;
-            }
-            throw new InvalidBotPropertyValueException(value, this);
-        }
-
-        Object parsedValue = null;
-        try {
-            parsedValue = this.type.parse(value);
-        } catch (Exception e) {
-            throw new InvalidBotPropertyValueException(value, this, e);
-        }
-
-        if (this.acceptedValues == null || this.acceptedValues.length == 0) {
-            return parsedValue;
-        }
-
-        for (Object acceptedValue : this.acceptedValues) {
-            if (acceptedValue.equals(parsedValue)) {
-                return parsedValue;
-            }
-        }
-        throw new InvalidBotPropertyValueException(value, this);
     }
 
     @Override

@@ -19,16 +19,14 @@ public class Bot {
 
     private Function<Bot, List<BotTask>> initialTasksGenerator;
     private List<BotTask> tasks = new ArrayList<>();
+    private List<BotOperation> botOperations;
     private BotState state = BotState.PENDING;
     private BotPropertyStore botPropertyStore;
 
-    public Bot(BotPropertyStore botPropertyStore, Function<Bot, List<BotTask>> initialTasksGenerator) {
+    public Bot(BotPropertyStore botPropertyStore, Function<Bot, List<BotTask>> initialTasksGenerator, List<BotOperation> botOperations) {
         this.botPropertyStore = botPropertyStore;
         this.initialTasksGenerator = initialTasksGenerator;
-    }
-
-    public void runOperation(BotOperation botOperation, BotPropertyStore paramsStore) throws Exception {
-        botOperation.run(this.getBotPropertyStore(), paramsStore);
+        this.botOperations = botOperations;
     }
 
     public void start() throws InvalidOperationException {
@@ -55,4 +53,7 @@ public class Bot {
         return this.botPropertyStore;
     }
 
+    public List<BotOperation> getBotOperations() {
+        return new ArrayList<>(this.botOperations);
+    }
 }
