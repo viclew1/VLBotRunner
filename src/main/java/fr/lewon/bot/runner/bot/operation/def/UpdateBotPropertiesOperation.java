@@ -18,15 +18,15 @@ public class UpdateBotPropertiesOperation extends BotOperation {
 
     @Override
     public List<BotPropertyDescriptor> getNeededProperties(Bot bot) {
-        return bot.getBotPropertyStore().keySet().stream()
+        return bot.getBotPropertyStore().entrySet().stream()
                 .map(bpd -> new BotPropertyDescriptor(
-                        bpd.getKey(),
-                        bpd.getType(),
-                        null,
-                        bpd.getDescription(),
+                        bpd.getKey().getKey(),
+                        bpd.getKey().getType(),
+                        bpd.getValue(),
+                        bpd.getKey().getDescription(),
                         false,
-                        bpd.isNullable(),
-                        bpd.getAcceptedValues()))
+                        bpd.getKey().isNullable(),
+                        bpd.getKey().getAcceptedValues()))
                 .collect(Collectors.toList());
     }
 

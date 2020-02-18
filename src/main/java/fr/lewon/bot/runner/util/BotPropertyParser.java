@@ -16,10 +16,13 @@ public class BotPropertyParser {
 
         BotPropertyStore botPropertyStore = new BotPropertyStore();
         for (BotPropertyDescriptor propertyDescriptor : targetBotPropertyDescriptors) {
-            if (!params.containsKey(propertyDescriptor.getKey()) && propertyDescriptor.isNeeded()) {
+            if (params.containsKey(propertyDescriptor.getKey())) {
+                botPropertyStore.addProperty(propertyDescriptor, this.parse(propertyDescriptor, params.get(propertyDescriptor.getKey())));
+            } else if (!propertyDescriptor.isNeeded()) {
+                botPropertyStore.addProperty(propertyDescriptor, propertyDescriptor.getDefaultValue());
+            } else {
                 throw new MissingBotPropertyException(propertyDescriptor);
             }
-            botPropertyStore.addProperty(propertyDescriptor, this.parse(propertyDescriptor, params.get(propertyDescriptor.getKey())));
         }
         return botPropertyStore;
     }
@@ -28,6 +31,9 @@ public class BotPropertyParser {
         if (value == null || value.isBlank()) {
             if (descriptor.isNullable()) {
                 return null;
+            }
+            if (!descriptor.isNeeded()) {
+                return descriptor.getDefaultValue();
             }
             throw new InvalidBotPropertyValueException(value, descriptor);
         }

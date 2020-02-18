@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a464eb38-ff3d-4837-999e-200a64d68fa6" name="Default Changelist" comment="" />
+    <list default="true" id="a464eb38-ff3d-4837-999e-200a64d68fa6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/operation/OperationResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/operation/OperationResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/operation/def/UpdateBotPropertiesOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/operation/def/UpdateBotPropertiesOperation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/util/BotPropertyParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/util/BotPropertyParser.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +31,7 @@
   </component>
   <component name="ProjectId" id="1XZBf9rrvQvQBrDgan1nTyURnS5" />
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RunDashboard">

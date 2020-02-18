@@ -15,6 +15,8 @@ import fr.lewon.bot.runner.errors.MissingBotPropertyException;
 import fr.lewon.bot.runner.util.BotOperationRunner;
 import fr.lewon.bot.runner.util.BotTaskScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +27,7 @@ import java.util.*;
 
 @SpringBootApplication
 @PropertySource("appli.properties")
-public class App {
+public class App implements ApplicationRunner {
 
     @Autowired
     private BotTaskScheduler botTaskScheduler;
@@ -37,9 +39,8 @@ public class App {
         SpringApplication.run(App.class);
     }
 
-    @Bean
-    public RMIClassLoader test() throws InvalidOperationException, InvalidBotPropertyValueException, MissingBotPropertyException {
-
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
         Bot bot = new BotBuilderExample().buildBot(new HashMap<>());
         bot.start();
         System.out.println("BOT STARTED");
@@ -47,7 +48,7 @@ public class App {
             try {
                 Thread.sleep(10000);
                 Map<String, String> props = new HashMap<>();
-                this.botOperationRunner.runOperation(bot.getBotOperations().get(0), bot, props);
+                System.out.println(this.botOperationRunner.runOperation(bot.getBotOperations().get(0), bot, props));
                 Thread.sleep(30000);
                 bot.stop();
                 System.out.println("BOT STOPPED");
@@ -55,7 +56,6 @@ public class App {
                 e.printStackTrace();
             }
         }).start();
-        return null;
     }
 }
 
@@ -68,7 +68,7 @@ class BotOperationExample extends BotOperation {
     @Override
     public List<BotPropertyDescriptor> getNeededProperties(Bot bot) {
         return Arrays.asList(
-                new BotPropertyDescriptor("prop1", BotPropertyType.BOOLEAN, false, "property bool", false, false, true, false)
+                new BotPropertyDescriptor("prop1", BotPropertyType.BOOLEAN, false, "property bool", true, true, true, false)
         );
     }
 
