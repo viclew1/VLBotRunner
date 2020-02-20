@@ -8,8 +8,9 @@ import fr.lewon.bot.runner.lifecycle.bot.BotLifeCycleOperation
 import fr.lewon.bot.runner.lifecycle.bot.BotState
 import fr.lewon.bot.runner.util.BeanUtil
 import fr.lewon.bot.runner.util.BotTaskScheduler
+import org.springframework.web.reactive.function.client.WebClient
 
-class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenerator: (Bot) -> List<BotTask>, val botOperations: List<BotOperation>) {
+class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenerator: (Bot) -> List<BotTask>, val botOperations: List<BotOperation>, val webClient: WebClient) {
 
     private val tasks = ArrayList<BotTask>()
     private var state = BotState.PENDING

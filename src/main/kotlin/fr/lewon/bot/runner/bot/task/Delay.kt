@@ -9,7 +9,6 @@ class Delay constructor(private val amount: Long, private val timeUnit: TimeUnit
     }
 
     companion object {
-
         val NEVER = Delay(-1)
         val ZERO = Delay(0)
     }

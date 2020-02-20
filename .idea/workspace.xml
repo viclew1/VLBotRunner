@@ -2,12 +2,45 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a464eb38-ff3d-4837-999e-200a64d68fa6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_annotations_13_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_1_3_61.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_common_1_3_61.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_jdk7_1_3_61.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_jdk8_1_3_61.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_test_1_3_61.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_test_common_1_3_61.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/operation/OperationResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/operation/OperationResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/operation/def/UpdateBotPropertiesOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/operation/def/UpdateBotPropertiesOperation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/util/BotPropertyParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/util/BotPropertyParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BotRunner.iml" beforeDir="false" afterPath="$PROJECT_DIR$/BotRunner.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/App.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/App.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/AbstractBotBuilder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/bot/AbstractBotBuilder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/Bot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/bot/Bot.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/operation/BotOperation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/bot/operation/BotOperation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/operation/OperationResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/bot/operation/OperationResult.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/operation/def/ReadBotPropertiesOperation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/bot/operation/def/ReadBotPropertiesOperation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/operation/def/UpdateBotPropertiesOperation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/bot/operation/def/UpdateBotPropertiesOperation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/props/BotPropertyDescriptor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/bot/props/BotPropertyDescriptor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/props/BotPropertyStore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/bot/props/BotPropertyStore.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/props/BotPropertyType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/bot/props/BotPropertyType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/task/BotTask.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/bot/task/BotTask.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/task/Delay.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/bot/task/Delay.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/bot/task/TaskResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/bot/task/TaskResult.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/config/ScheduleConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/config/ScheduleConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/errors/BotOperationExecutionException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/errors/BotOperationExecutionException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/errors/InvalidBotPropertyValueException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/errors/InvalidBotPropertyValueException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/errors/InvalidOperationException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/errors/InvalidOperationException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/errors/MissingBotPropertyException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/errors/MissingBotPropertyException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/lifecycle/ILifeCycleOperation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/lifecycle/ILifeCycleOperation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/lifecycle/Transition.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/lifecycle/Transition.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/lifecycle/bot/BotLifeCycleOperation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/lifecycle/bot/BotLifeCycleOperation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/lifecycle/bot/BotState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/lifecycle/bot/BotState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/lifecycle/task/TaskLifeCycleOperation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/lifecycle/task/TaskLifeCycleOperation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/lifecycle/task/TaskState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/lifecycle/task/TaskState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/util/BeanUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/util/BeanUtil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/util/BotOperationRunner.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/util/BotOperationRunner.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/util/BotPropertyParser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/util/BotPropertyParser.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/lewon/bot/runner/util/BotTaskScheduler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/fr/lewon/bot/runner/util/BotTaskScheduler.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,6 +65,7 @@
   <component name="ProjectId" id="1XZBf9rrvQvQBrDgan1nTyURnS5" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib/1.3.61/kotlin-stdlib-1.3.61-sources.jar!/" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RunDashboard">
@@ -46,7 +80,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Kotlin.fr.lewon.bot.runner.App">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="fr.lewon.bot.runner.App" />
       <module name="BotRunner" />
@@ -60,8 +94,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="fr.lewon.bot.runner.App" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+      <module name="BotRunner" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="fr.lewon.bot.runner.App" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.fr.lewon.bot.runner.App" />
         <item itemvalue="Application.App" />
       </list>
     </recent_temporary>

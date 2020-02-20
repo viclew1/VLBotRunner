@@ -9,15 +9,22 @@ import org.springframework.stereotype.Component
 @Component
 class BotPropertyParser {
 
+    /**
+     * Parses the parameters in the passed Map using the passed BotPropertyDescriptors, generating a BotPropertyStore. <br>
+     *
+     * @param params
+     * @param targetBotPropertyDescriptors
+     * @throws InvalidBotPropertyValueException
+     * @throws MissingBotPropertyException
+     */
     @Throws(InvalidBotPropertyValueException::class, MissingBotPropertyException::class)
     fun parseParams(params: Map<String, String?>, targetBotPropertyDescriptors: List<BotPropertyDescriptor>): BotPropertyStore {
-
         val botPropertyStore = BotPropertyStore()
         for (propertyDescriptor in targetBotPropertyDescriptors) {
             if (params.containsKey(propertyDescriptor.key)) {
-                botPropertyStore.addProperty(propertyDescriptor, this.parse(propertyDescriptor, params[propertyDescriptor.key]))
+                botPropertyStore[propertyDescriptor] = this.parse(propertyDescriptor, params[propertyDescriptor.key])
             } else if (!propertyDescriptor.isNeeded) {
-                botPropertyStore.addProperty(propertyDescriptor, propertyDescriptor.defaultValue)
+                botPropertyStore[propertyDescriptor] = propertyDescriptor.defaultValue
             } else {
                 throw MissingBotPropertyException(propertyDescriptor)
             }

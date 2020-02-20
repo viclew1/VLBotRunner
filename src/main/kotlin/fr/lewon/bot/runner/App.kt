@@ -17,6 +17,7 @@ import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.PropertySource
+import org.springframework.web.reactive.function.client.WebClient
 import kotlin.random.Random
 
 @SpringBootApplication
@@ -64,12 +65,16 @@ open class App : ApplicationRunner {
 
 internal class BotBuilderExample : AbstractBotBuilder("botNameExample",
         BotPropertyDescriptor("bool1", BotPropertyType.BOOLEAN, false, "boolean property", true, true, true, false),
-        BotPropertyDescriptor("int1", BotPropertyType.INTEGER, -1, "integer property", false, false)) {
+        BotPropertyDescriptor("int1", BotPropertyType.INTEGER, -1, "integer property", isNeeded = false, isNullable = false)) {
 
-    override val botOperations: List<BotOperation>
-        get() = listOf(
-                UpdateBotPropertiesOperation(),
+    override fun getBotOperations(): List<BotOperation> {
+        return listOf(UpdateBotPropertiesOperation(),
                 ReadBotPropertiesOperation())
+    }
+
+    override fun buildWebClient(): WebClient {
+        return WebClient.create();
+    }
 
     override fun getInitialTasks(bot: Bot): List<BotTask> {
         val t = TaskExample(bot)

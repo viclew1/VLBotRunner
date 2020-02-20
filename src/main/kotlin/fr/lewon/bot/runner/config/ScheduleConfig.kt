@@ -22,7 +22,7 @@ import java.util.concurrent.Executor
 open class ScheduleConfig : AsyncConfigurer, SchedulingConfigurer {
 
     @Value("\${bot.task.scheduler.pool.size:50}")
-    private val poolSize: Int = 0
+    private var poolSize: Int = 0
 
     @Autowired
     private lateinit var threadPoolTaskScheduler: ThreadPoolTaskScheduler
