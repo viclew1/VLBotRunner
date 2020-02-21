@@ -21,7 +21,7 @@ abstract class BotTask(private val bot: Bot) : Trigger, Runnable {
      *
      * @return
      */
-    abstract val label: String
+    abstract fun getLabel(): String
 
     override fun run() {
         try {

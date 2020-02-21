@@ -1,12 +1,19 @@
 package fr.lewon.bot.runner.lifecycle.task
 
 import fr.lewon.bot.runner.lifecycle.ILifeCycleOperation
-import fr.lewon.bot.runner.lifecycle.Transition
 
-enum class TaskLifeCycleOperation constructor(vararg possibleTransitions: Transition<TaskState>) : ILifeCycleOperation<TaskState> {
+enum class TaskLifeCycleOperation constructor(private val to: TaskState, private vararg val from: TaskState) : ILifeCycleOperation<TaskState> {
 
-    START(Transition<TaskState>(TaskState.ACTIVE, TaskState.PENDING)),
-    STOP(Transition<TaskState>(TaskState.DISPOSED, TaskState.ACTIVE));
+    START(TaskState.ACTIVE, TaskState.PENDING),
+    STOP(TaskState.DISPOSED, TaskState.ACTIVE),
+    CRASH(TaskState.CRASHED);
 
-    override val transitions: List<Transition<TaskState>> = listOf(*possibleTransitions);
+    override fun getTo(): TaskState {
+        return to
+    }
+
+    override fun getFrom(): List<TaskState> {
+        return listOf(*from)
+    }
+
 }

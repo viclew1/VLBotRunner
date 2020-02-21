@@ -1,16 +1,19 @@
 package fr.lewon.bot.runner.lifecycle.bot
 
 import fr.lewon.bot.runner.lifecycle.ILifeCycleOperation
-import fr.lewon.bot.runner.lifecycle.Transition
-
 import fr.lewon.bot.runner.lifecycle.bot.BotState.*
 
-enum class BotLifeCycleOperation(vararg possibleTransitions: Transition<BotState>) : ILifeCycleOperation<BotState> {
+enum class BotLifeCycleOperation(private val to: BotState, private vararg val from: BotState) : ILifeCycleOperation<BotState> {
 
-    START(Transition<BotState>(ACTIVE, PENDING, STOPPED)),
-    STOP(Transition<BotState>(STOPPED, ACTIVE)),
-    KILL(Transition<BotState>(KILLED, PENDING, ACTIVE, STOPPED));
+    START(ACTIVE, PENDING, STOPPED),
+    STOP(STOPPED, ACTIVE),
+    CRASH(CRASHED);
 
-    override val transitions: List<Transition<BotState>> = listOf(*possibleTransitions)
+    override fun getTo(): BotState {
+        return to
+    }
 
+    override fun getFrom(): List<BotState> {
+        return listOf(*from)
+    }
 }

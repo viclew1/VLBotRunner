@@ -30,8 +30,16 @@ class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenera
     }
 
     @Throws(InvalidOperationException::class)
-    fun kill() {
-        this.state = BotLifeCycleOperation.KILL.getResultingState(this.state)
+    fun reset() {
+        crash()
+        start()
+    }
+
+    @Throws(InvalidOperationException::class)
+    fun crash() {
+        botTaskScheduler.cancelTaskAutoExecution(this.tasks)
+        this.tasks.clear()
+        this.state = BotState.CRASHED
     }
 
     fun getTasks(): List<BotTask> {

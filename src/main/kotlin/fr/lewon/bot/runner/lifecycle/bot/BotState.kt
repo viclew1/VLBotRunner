@@ -5,6 +5,6 @@ enum class BotState {
     PENDING,
     ACTIVE,
     STOPPED,
-    KILLED
+    CRASHED
 
 }

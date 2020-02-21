@@ -86,8 +86,9 @@ internal class BotBuilderExample : AbstractBotBuilder("botNameExample",
 
 internal class TaskDisplayTimers(bot: Bot, private val task: TaskExample) : BotTask(bot) {
 
-    override val label: String
-        get() = "Timers    "
+    override fun getLabel(): String {
+        return "Timers    "
+    }
 
     @Throws(Exception::class)
     override fun doExecute(bot: Bot): TaskResult {
@@ -103,8 +104,9 @@ internal class TaskExample(bot: Bot) : BotTask(bot) {
     var delay: Long = 0
         private set
 
-    override val label: String
-        get() = "Task " + this.delay
+    override fun getLabel(): String {
+        return "Task " + this.delay
+    }
 
     @Throws(Exception::class)
     override fun doExecute(bot: Bot): TaskResult {

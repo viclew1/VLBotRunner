@@ -4,14 +4,14 @@ import fr.lewon.bot.runner.errors.InvalidOperationException
 
 interface ILifeCycleOperation<T> {
 
-    val transitions: List<Transition<T>>
+    fun getTo(): T
+
+    fun getFrom(): List<T>
 
     @Throws(InvalidOperationException::class)
     fun getResultingState(initialState: T): T {
-        for (transition in this.transitions) {
-            if (transition.fromStates.contains(initialState)) {
-                return transition.toState
-            }
+        if (getFrom().isEmpty() || getFrom().contains(initialState)) {
+            return getTo()
         }
         throw InvalidOperationException(this, initialState.toString())
     }
