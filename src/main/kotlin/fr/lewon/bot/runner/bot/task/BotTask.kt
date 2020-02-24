@@ -3,8 +3,6 @@ package fr.lewon.bot.runner.bot.task
 import fr.lewon.bot.runner.Bot
 import fr.lewon.bot.runner.lifecycle.task.TaskLifeCycleOperation
 import fr.lewon.bot.runner.lifecycle.task.TaskState
-import fr.lewon.bot.runner.util.BeanUtil
-import fr.lewon.bot.runner.util.BotTaskScheduler
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.Trigger
 import org.springframework.scheduling.TriggerContext
@@ -54,7 +52,7 @@ abstract class BotTask @JvmOverloads constructor(private val bot: Bot, private v
                 return Date(System.currentTimeMillis() + initialDelayMillis)
             }
             this.taskResult?.tasksToCreate
-                    ?.let { botTaskScheduler.startTaskAutoExecution(it) }
+                    ?.let { bot.startTasks(it) }
             this.taskResult?.delay?.getDelayMillis()
                     ?.let { executionTimeMillis?.plus(it) }
                     ?.let { return Date(it) }
@@ -72,8 +70,6 @@ abstract class BotTask @JvmOverloads constructor(private val bot: Bot, private v
     }
 
     companion object {
-
         private val LOGGER = LoggerFactory.getLogger(BotTask::class.java)
-        private val botTaskScheduler = BeanUtil.getBean(BotTaskScheduler::class.java)
     }
 }
