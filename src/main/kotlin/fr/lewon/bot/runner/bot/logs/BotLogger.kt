@@ -152,9 +152,6 @@ class BotLogger @JvmOverloads constructor(private val maxAge: Long = DEFAULT_MAX
     companion object {
         private val LOGGER = LoggerFactory.getLogger(BotLogger::class.java)
         private val DEFAULT_MAX_AGE: Long = TimeUnit.DAYS.toMillis(1L)
-        /**
-         * The default date format used to format logs messages
-         */
         private const val DEFAULT_DATE_FORMAT = "yyyy-MM-dd_HH:mm:ss.SSS"
     }
 

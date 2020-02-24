@@ -59,7 +59,7 @@ abstract class BotTask @JvmOverloads constructor(private val bot: Bot, private v
             this.state = TaskLifeCycleOperation.STOP.getResultingState(this.state)
         } catch (e: Exception) {
             LOGGER.error("An error occurred while fetching next [" + this.javaClass.canonicalName + "] execution time", e)
-            this.state = TaskState.CRASHED
+            bot.crash()
         }
 
         return null

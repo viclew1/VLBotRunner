@@ -19,7 +19,7 @@ import java.util.concurrent.Executor
 @EnableScheduling
 open class ScheduleConfig : AsyncConfigurer, SchedulingConfigurer {
 
-    @Value("\${bot.task.scheduler.pool.size:50}")
+    @Value("\${bot.task.scheduler.pool.size:10}")
     private var poolSize: Int = 0
 
     @Autowired

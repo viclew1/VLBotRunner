@@ -31,6 +31,7 @@ abstract class AbstractSessionManager(private val login: String, private val pas
         return webClient
     }
 
+    @Synchronized
     @Throws(Exception::class)
     private fun initAll() {
         val currentTimeMillis = System.currentTimeMillis()
