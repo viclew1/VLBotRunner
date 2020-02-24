@@ -5,7 +5,7 @@ import fr.lewon.bot.runner.lifecycle.bot.BotState.*
 
 enum class BotLifeCycleOperation(private val to: BotState, private vararg val from: BotState) : ILifeCycleOperation<BotState> {
 
-    START(ACTIVE, PENDING, STOPPED),
+    START(ACTIVE, PENDING, STOPPED, CRASHED),
     STOP(STOPPED, ACTIVE),
     CRASH(CRASHED);
 

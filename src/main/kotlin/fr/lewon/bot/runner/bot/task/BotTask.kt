@@ -1,6 +1,6 @@
 package fr.lewon.bot.runner.bot.task
 
-import fr.lewon.bot.runner.bot.Bot
+import fr.lewon.bot.runner.Bot
 import fr.lewon.bot.runner.lifecycle.task.TaskLifeCycleOperation
 import fr.lewon.bot.runner.lifecycle.task.TaskState
 import fr.lewon.bot.runner.util.BeanUtil
@@ -10,7 +10,7 @@ import org.springframework.scheduling.Trigger
 import org.springframework.scheduling.TriggerContext
 import java.util.*
 
-abstract class BotTask(private val bot: Bot) : Trigger, Runnable {
+abstract class BotTask @JvmOverloads constructor(private val bot: Bot, private val initialDelayMillis: Long = 0) : Trigger, Runnable {
     var executionTimeMillis: Long? = null
         private set
     private var state = TaskState.PENDING
@@ -28,8 +28,8 @@ abstract class BotTask(private val bot: Bot) : Trigger, Runnable {
             this.taskResult = this.doExecute(this.bot)
             this.executionTimeMillis = System.currentTimeMillis()
         } catch (e: Exception) {
-            this.state = TaskState.CRASHED
             LOGGER.error("An error occurred while processing [" + this.javaClass.canonicalName + "]", e)
+            bot.crash()
         }
 
     }
@@ -51,7 +51,7 @@ abstract class BotTask(private val bot: Bot) : Trigger, Runnable {
         try {
             if (this.state == TaskState.PENDING) {
                 this.state = TaskLifeCycleOperation.START.getResultingState(this.state)
-                return Date()
+                return Date(System.currentTimeMillis() + initialDelayMillis)
             }
             this.taskResult?.tasksToCreate
                     ?.let { botTaskScheduler.startTaskAutoExecution(it) }
@@ -65,6 +65,10 @@ abstract class BotTask(private val bot: Bot) : Trigger, Runnable {
         }
 
         return null
+    }
+
+    fun crash() {
+        this.state = TaskState.CRASHED
     }
 
     companion object {

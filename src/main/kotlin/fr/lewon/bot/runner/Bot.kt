@@ -1,4 +1,4 @@
-package fr.lewon.bot.runner.bot
+package fr.lewon.bot.runner
 
 import fr.lewon.bot.runner.bot.operation.BotOperation
 import fr.lewon.bot.runner.bot.props.BotPropertyStore
@@ -6,11 +6,11 @@ import fr.lewon.bot.runner.bot.task.BotTask
 import fr.lewon.bot.runner.errors.InvalidOperationException
 import fr.lewon.bot.runner.lifecycle.bot.BotLifeCycleOperation
 import fr.lewon.bot.runner.lifecycle.bot.BotState
+import fr.lewon.bot.runner.session.AbstractSessionManager
 import fr.lewon.bot.runner.util.BeanUtil
 import fr.lewon.bot.runner.util.BotTaskScheduler
-import org.springframework.web.reactive.function.client.WebClient
 
-class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenerator: (Bot) -> List<BotTask>, val botOperations: List<BotOperation>, val webClient: WebClient) {
+class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenerator: (Bot) -> List<BotTask>, val botOperations: List<BotOperation>, val sessionManager: AbstractSessionManager) {
 
     private val tasks = ArrayList<BotTask>()
     private var state = BotState.PENDING
@@ -26,20 +26,16 @@ class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenera
     fun stop() {
         this.state = BotLifeCycleOperation.STOP.getResultingState(this.state)
         botTaskScheduler.cancelTaskAutoExecution(this.tasks)
+        sessionManager.forceRefresh()
         this.tasks.clear()
     }
 
-    @Throws(InvalidOperationException::class)
-    fun reset() {
-        crash()
-        start()
-    }
-
-    @Throws(InvalidOperationException::class)
     fun crash() {
+        this.state = BotLifeCycleOperation.CRASH.getResultingState(this.state)
         botTaskScheduler.cancelTaskAutoExecution(this.tasks)
+        sessionManager.forceRefresh()
+        this.tasks.forEach { t -> t.crash() }
         this.tasks.clear()
-        this.state = BotState.CRASHED
     }
 
     fun getTasks(): List<BotTask> {

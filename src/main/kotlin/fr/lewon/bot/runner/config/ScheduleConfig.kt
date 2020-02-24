@@ -1,7 +1,5 @@
 package fr.lewon.bot.runner.config
 
-import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler
-import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -29,12 +27,8 @@ open class ScheduleConfig : AsyncConfigurer, SchedulingConfigurer {
 
     @Bean
     override fun getAsyncExecutor(): Executor? {
-        this.threadPoolTaskScheduler.poolSize = this.poolSize
+        this.threadPoolTaskScheduler.setPoolSize(this.poolSize)
         return ConcurrentTaskExecutor(this.threadPoolTaskScheduler)
-    }
-
-    override fun getAsyncUncaughtExceptionHandler(): AsyncUncaughtExceptionHandler? {
-        return SimpleAsyncUncaughtExceptionHandler()
     }
 
     override fun configureTasks(taskRegistrar: ScheduledTaskRegistrar) {

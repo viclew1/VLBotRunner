@@ -1,6 +1,6 @@
 package fr.lewon.bot.runner.util
 
-import fr.lewon.bot.runner.bot.Bot
+import fr.lewon.bot.runner.Bot
 import fr.lewon.bot.runner.bot.operation.BotOperation
 import fr.lewon.bot.runner.errors.BotOperationExecutionException
 import fr.lewon.bot.runner.errors.InvalidBotPropertyValueException

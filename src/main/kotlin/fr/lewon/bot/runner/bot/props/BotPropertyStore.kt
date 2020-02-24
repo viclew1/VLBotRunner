@@ -4,9 +4,8 @@ import java.util.*
 
 class BotPropertyStore : HashMap<BotPropertyDescriptor, Any?> {
 
-    constructor() {}
-
-    constructor(botPropertyStore: BotPropertyStore) : super(botPropertyStore) {}
+    constructor()
+    constructor(botPropertyStore: BotPropertyStore) : super(botPropertyStore)
 
     fun getByKey(key: String): Any? {
         return this[this.keys.stream()

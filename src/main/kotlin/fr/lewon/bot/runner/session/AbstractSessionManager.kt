@@ -5,8 +5,10 @@ import org.springframework.web.reactive.function.client.WebClient
 /**
  * Manages the session between the host and the client.
  */
-abstract class AbstractSessionManager<T>(private val login: String, private val password: String, private val sessionDurability: Long) {
-    private var sessionObject: T? = null
+abstract class AbstractSessionManager(private val login: String, private val password: String, private val sessionDurability: Long, private val webClientBuilder: WebClient.Builder) {
+
+    private lateinit var webClient: WebClient
+    private lateinit var sessionObject: Any
     private var lastGenerationTime: Long = -sessionDurability
     private var forceRefresh: Boolean = false
 
@@ -14,19 +16,30 @@ abstract class AbstractSessionManager<T>(private val login: String, private val 
      * Returns the user session. If no session has been generated, or if the last generated session is older than the session
      * durability, generates a new session by calling [.generateSessionObject]
      *
-     * @param webClient
      * @return
      * @throws Exception
      */
     @Throws(Exception::class)
-    fun getSession(webClient: WebClient): T? {
+    fun getSession(): Any {
+        initAll()
+        return this.sessionObject
+    }
+
+    @Throws(Exception::class)
+    fun getWebClient(): WebClient {
+        initAll()
+        return webClient
+    }
+
+    @Throws(Exception::class)
+    private fun initAll() {
         val currentTimeMillis = System.currentTimeMillis()
         if (this.forceRefresh || this.lastGenerationTime + this.sessionDurability <= currentTimeMillis) {
+            webClient = webClientBuilder.build()
             this.sessionObject = this.generateSessionObject(webClient, this.login, this.password)
             this.lastGenerationTime = currentTimeMillis
             this.forceRefresh = false
         }
-        return this.sessionObject
     }
 
     /**
@@ -46,6 +59,6 @@ abstract class AbstractSessionManager<T>(private val login: String, private val 
      * @throws Exception
      */
     @Throws(Exception::class)
-    protected abstract fun generateSessionObject(webClient: WebClient, login: String, password: String): T
+    protected abstract fun generateSessionObject(webClient: WebClient, login: String, password: String): Any
 
 }

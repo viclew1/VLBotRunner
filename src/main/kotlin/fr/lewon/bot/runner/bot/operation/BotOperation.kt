@@ -1,6 +1,6 @@
 package fr.lewon.bot.runner.bot.operation
 
-import fr.lewon.bot.runner.bot.Bot
+import fr.lewon.bot.runner.Bot
 import fr.lewon.bot.runner.bot.props.BotPropertyDescriptor
 import fr.lewon.bot.runner.bot.props.BotPropertyStore
 
