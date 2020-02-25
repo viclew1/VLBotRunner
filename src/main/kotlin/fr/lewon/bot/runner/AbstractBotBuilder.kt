@@ -1,6 +1,5 @@
 package fr.lewon.bot.runner
 
-import fr.lewon.bot.runner.bot.logs.BotLogger
 import fr.lewon.bot.runner.bot.operation.BotOperation
 import fr.lewon.bot.runner.bot.props.BotPropertyDescriptor
 import fr.lewon.bot.runner.bot.props.BotPropertyType
@@ -21,7 +20,7 @@ abstract class AbstractBotBuilder(val botName: String, botPropertyDescriptors: L
     @Throws(InvalidBotPropertyValueException::class, MissingBotPropertyException::class)
     fun buildBot(login: String, password: String, properties: Map<String, String?>): Bot {
         val botPropertyStore = botPropertyParser.parseParams(properties, this.botPropertyDescriptors)
-        return Bot(botPropertyStore, { b -> this.getInitialTasks(b) }, this.getBotOperations(), buildSessionManager(login, password), BotLogger())
+        return Bot(botPropertyStore, { b -> this.getInitialTasks(b) }, this.getBotOperations(), buildSessionManager(login, password))
     }
 
     protected abstract fun buildSessionManager(login: String, password: String): AbstractSessionManager
