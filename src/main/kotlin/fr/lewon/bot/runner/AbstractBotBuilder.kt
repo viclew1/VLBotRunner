@@ -10,7 +10,7 @@ import fr.lewon.bot.runner.session.AbstractSessionManager
 import fr.lewon.bot.runner.util.BeanUtil
 import fr.lewon.bot.runner.util.BotPropertyParser
 
-abstract class AbstractBotBuilder(val botName: String, botPropertyDescriptors: List<BotPropertyDescriptor>) {
+abstract class AbstractBotBuilder(botPropertyDescriptors: List<BotPropertyDescriptor>, val botOperations: List<BotOperation> = emptyList()) {
 
     private val botPropertyDescriptors: List<BotPropertyDescriptor> = listOf(
             BotPropertyDescriptor(key = "auto_restart_timer", type = BotPropertyType.INTEGER, defaultValue = null, description = "Amount of minutes before restarting a bot on crash. If null, the bot doesn't restart", isNeeded = false, isNullable = true),
@@ -20,12 +20,10 @@ abstract class AbstractBotBuilder(val botName: String, botPropertyDescriptors: L
     @Throws(InvalidBotPropertyValueException::class, MissingBotPropertyException::class)
     fun buildBot(login: String, password: String, properties: Map<String, String?>): Bot {
         val botPropertyStore = botPropertyParser.parseParams(properties, this.botPropertyDescriptors)
-        return Bot(botPropertyStore, { b -> this.getInitialTasks(b) }, this.getBotOperations(), buildSessionManager(login, password))
+        return Bot(botPropertyStore, { b -> this.getInitialTasks(b) }, botOperations, buildSessionManager(login, password))
     }
 
     protected abstract fun buildSessionManager(login: String, password: String): AbstractSessionManager
-
-    protected abstract fun getBotOperations(): List<BotOperation>
 
     protected abstract fun getInitialTasks(bot: Bot): List<BotTask>
 

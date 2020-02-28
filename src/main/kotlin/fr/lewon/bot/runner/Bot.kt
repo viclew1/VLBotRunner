@@ -12,10 +12,11 @@ import fr.lewon.bot.runner.session.AbstractSessionManager
 import fr.lewon.bot.runner.util.BeanUtil
 import fr.lewon.bot.runner.util.BotTaskScheduler
 
-class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenerator: (Bot) -> List<BotTask>, val botOperations: List<BotOperation>, val sessionManager: AbstractSessionManager, val logger: BotLogger = BotLogger()) {
+class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenerator: (Bot) -> List<BotTask>, private val botOperations: List<BotOperation>, val sessionManager: AbstractSessionManager, val logger: BotLogger = BotLogger()) {
 
     private val tasks = ArrayList<BotTask>()
-    private var state = BotState.PENDING
+    var state = BotState.PENDING
+        private set
 
     @Throws(InvalidOperationException::class)
     fun start() {
