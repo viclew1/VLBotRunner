@@ -12,7 +12,7 @@ import fr.lewon.bot.runner.util.BotPropertyParser
 
 abstract class AbstractBotBuilder(botPropertyDescriptors: List<BotPropertyDescriptor>, val botOperations: List<BotOperation> = emptyList()) {
 
-    private val botPropertyDescriptors: List<BotPropertyDescriptor> = listOf(
+    val botPropertyDescriptors: List<BotPropertyDescriptor> = listOf(
             BotPropertyDescriptor(key = "auto_restart_timer", type = BotPropertyType.INTEGER, defaultValue = null, description = "Amount of minutes before restarting a bot on crash. If null, the bot doesn't restart", isNeeded = false, isNullable = true),
             *botPropertyDescriptors.toTypedArray()
     )

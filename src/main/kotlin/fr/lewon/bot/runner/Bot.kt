@@ -21,16 +21,14 @@ class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenera
     @Throws(InvalidOperationException::class)
     fun start() {
         this.state = BotLifeCycleOperation.START.getResultingState(this.state)
-        this.tasks.addAll(this.initialTasksGenerator.invoke(this))
-        botTaskScheduler.startTaskAutoExecution(this.tasks)
+        startTasks(this.initialTasksGenerator.invoke(this))
     }
 
     @Throws(InvalidOperationException::class)
     fun stop() {
         this.state = BotLifeCycleOperation.STOP.getResultingState(this.state)
-        botTaskScheduler.cancelTaskAutoExecution(this.tasks)
+        cancelTasks(tasks)
         sessionManager.forceRefresh()
-        this.tasks.clear()
     }
 
     fun crash() {

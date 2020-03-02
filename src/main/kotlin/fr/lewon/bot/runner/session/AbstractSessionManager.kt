@@ -5,7 +5,7 @@ import org.springframework.web.reactive.function.client.WebClient
 /**
  * Manages the session between the host and the client.
  */
-abstract class AbstractSessionManager(private val login: String, private val password: String, private val sessionDurability: Long, private val webClientBuilder: WebClient.Builder) {
+abstract class AbstractSessionManager(val login: String, private val password: String, private val sessionDurability: Long, private val webClientBuilder: WebClient.Builder) {
 
     private lateinit var webClient: WebClient
     private lateinit var sessionObject: Any
