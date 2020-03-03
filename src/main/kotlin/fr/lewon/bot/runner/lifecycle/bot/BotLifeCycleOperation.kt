@@ -13,7 +13,9 @@ enum class BotLifeCycleOperation(private val operation: (Bot) -> Unit) {
         if (!bot.state.operations.contains(this)) {
             throw InvalidOperationException(name, bot.state.name)
         }
+        val oldState = bot.state
         operation.invoke(bot)
+        bot.logger.info("Bot transition applied : [$oldState] => [${bot.state}]")
     }
 
 }
