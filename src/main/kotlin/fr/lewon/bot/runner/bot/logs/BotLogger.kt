@@ -45,7 +45,7 @@ class BotLogger @JvmOverloads constructor(private val maxAge: Long = DEFAULT_MAX
         val currentTime = now.time
         val log = Log("$nowStr : $level - $message", currentTime, level)
         logs.add(log)
-        logs.removeIf { log -> log.time + maxAge < currentTime }
+        logs.removeIf { l -> l.time + maxAge < currentTime }
     }
 
     private fun logThrowable(level: LogLevel, message: String, throwable: Throwable) {
