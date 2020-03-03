@@ -60,12 +60,14 @@ class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenera
         }
     }
 
-    fun startTasks(tasks: List<BotTask>) {
-        tasks.forEach { t -> startTask(t) }
+    fun startTasks(toStart: List<BotTask>) {
+        botTaskScheduler.startTaskAutoExecution(toStart)
+        this.tasks.addAll(toStart)
     }
 
-    fun cancelTasks(tasks: List<BotTask>) {
-        tasks.forEach { t -> cancelTask(t) }
+    fun cancelTasks(toCancel: List<BotTask>) {
+        botTaskScheduler.cancelTaskAutoExecution(toCancel)
+        this.tasks.removeAll(toCancel)
     }
 
     companion object {

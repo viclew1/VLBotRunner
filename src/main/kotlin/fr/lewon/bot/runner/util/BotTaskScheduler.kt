@@ -18,7 +18,7 @@ class BotTaskScheduler {
         get() = ArrayList(this.jobsMap.keys)
 
     fun cancelTaskAutoExecution(task: BotTask) {
-        this.jobsMap.remove(task)?.cancel(true)
+        this.jobsMap.remove(task)?.cancel(false)
     }
 
     fun cancelTaskAutoExecution(tasks: List<BotTask>) {

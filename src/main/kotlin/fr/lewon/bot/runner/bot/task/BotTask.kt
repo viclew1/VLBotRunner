@@ -8,25 +8,16 @@ import org.springframework.scheduling.Trigger
 import org.springframework.scheduling.TriggerContext
 import java.util.*
 
-abstract class BotTask @JvmOverloads constructor(private val bot: Bot, private val initialDelayMillis: Long = 0) : Trigger, Runnable {
-    var executionTimeMillis: Long? = null
+abstract class BotTask @JvmOverloads constructor(val name: String, val bot: Bot, val initialDelayMillis: Long = 0) : Trigger, Runnable {
+    var state = TaskState.PENDING
         private set
-    private var state = TaskState.PENDING
     private var taskResult: TaskResult? = null
-
-    /**
-     * Returns the display name of this task
-     *
-     * @return
-     */
-    abstract fun getLabel(): String
 
     override fun run() {
         try {
             this.taskResult = this.doExecute(this.bot)
-            this.executionTimeMillis = System.currentTimeMillis()
         } catch (e: Exception) {
-            LOGGER.error("An error occurred while processing [" + this.javaClass.canonicalName + "]", e)
+            LOGGER.error("An error occurred while processing [${this.javaClass.canonicalName}]", e)
             bot.crash()
         }
 
@@ -54,11 +45,11 @@ abstract class BotTask @JvmOverloads constructor(private val bot: Bot, private v
             this.taskResult?.tasksToCreate
                     ?.let { bot.startTasks(it) }
             this.taskResult?.delay?.getDelayMillis()
-                    ?.let { executionTimeMillis?.plus(it) }
+                    ?.let { triggerContext.lastCompletionTime()?.time?.plus(it) }
                     ?.let { return Date(it) }
             this.state = TaskLifeCycleOperation.STOP.getResultingState(this.state)
         } catch (e: Exception) {
-            LOGGER.error("An error occurred while fetching next [" + this.javaClass.canonicalName + "] execution time", e)
+            LOGGER.error("An error occurred while fetching next [${this.javaClass.canonicalName}] execution time", e)
             bot.crash()
         }
 
