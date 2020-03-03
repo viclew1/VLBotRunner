@@ -1,45 +1,43 @@
 package fr.lewon.bot.runner
 
 import fr.lewon.bot.runner.bot.logs.BotLogger
-import fr.lewon.bot.runner.bot.operation.BotOperation
 import fr.lewon.bot.runner.bot.props.BotPropertyStore
 import fr.lewon.bot.runner.bot.task.BotTask
 import fr.lewon.bot.runner.bot.task.def.RestartBotTask
-import fr.lewon.bot.runner.errors.InvalidOperationException
-import fr.lewon.bot.runner.lifecycle.bot.BotLifeCycleOperation
 import fr.lewon.bot.runner.lifecycle.bot.BotState
 import fr.lewon.bot.runner.session.AbstractSessionManager
 import fr.lewon.bot.runner.util.BeanUtil
 import fr.lewon.bot.runner.util.BotTaskScheduler
 
-class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenerator: (Bot) -> List<BotTask>, private val botOperations: List<BotOperation>, val sessionManager: AbstractSessionManager, val logger: BotLogger = BotLogger()) {
+class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenerator: (Bot) -> List<BotTask>, val sessionManager: AbstractSessionManager, val logger: BotLogger = BotLogger()) {
 
     private val tasks = ArrayList<BotTask>()
     var state = BotState.PENDING
         private set
 
-    @Throws(InvalidOperationException::class)
     fun start() {
-        this.state = BotLifeCycleOperation.START.getResultingState(this.state)
-        startTasks(this.initialTasksGenerator.invoke(this))
-    }
-
-    @Throws(InvalidOperationException::class)
-    fun stop() {
-        this.state = BotLifeCycleOperation.STOP.getResultingState(this.state)
         cancelTasks(tasks)
         sessionManager.forceRefresh()
+        startTasks(this.initialTasksGenerator.invoke(this))
+        this.state = BotState.ACTIVE
     }
 
-    fun crash() {
-        this.state = BotLifeCycleOperation.CRASH.getResultingState(this.state)
-        botTaskScheduler.cancelTaskAutoExecution(this.tasks)
-        sessionManager.forceRefresh()
+    fun stop() {
+        cancelTasks(tasks)
+        this.state = BotState.STOPPED
+    }
+
+    fun crash(message: String? = null) {
         this.tasks.forEach { t -> t.crash() }
-        this.tasks.clear()
-        (botPropertyStore.getByKey("auto_restart_timer") as Int?)?.toLong()?.let {
-            startTask(RestartBotTask(this, it * 1000))
-        }
+        cancelTasks(tasks)
+        this.state = BotState.CRASHED
+        message?.let { logger.error(" BOT CRASHED ! Reason : $message") }
+        (botPropertyStore.getByKey("auto_restart_timer") as Int?)
+                ?.toLong()
+                ?.let {
+                    startTask(RestartBotTask(this, it * 1000))
+                    logger.error("Trying to restart bot in $it seconds")
+                }
     }
 
     fun getTasks(): List<BotTask> {
@@ -50,13 +48,6 @@ class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenera
         if (!tasks.contains(botTask)) {
             botTaskScheduler.startTaskAutoExecution(botTask)
             tasks.add(botTask)
-        }
-    }
-
-    fun cancelTask(botTask: BotTask) {
-        if (tasks.contains(botTask)) {
-            botTaskScheduler.cancelTaskAutoExecution(botTask)
-            tasks.remove(botTask)
         }
     }
 

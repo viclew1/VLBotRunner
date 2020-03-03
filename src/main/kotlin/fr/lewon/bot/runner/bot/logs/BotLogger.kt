@@ -18,7 +18,7 @@ import kotlin.collections.ArrayList
  */
 class BotLogger @JvmOverloads constructor(private val maxAge: Long = DEFAULT_MAX_AGE, private val dateFormat: String = DEFAULT_DATE_FORMAT) {
 
-    private val logs: MutableList<Log> = ArrayList()
+    private val logs: MutableList<Log> = Collections.synchronizedList(ArrayList())
 
     /**
      * @return A copy of the stored logs
@@ -45,7 +45,7 @@ class BotLogger @JvmOverloads constructor(private val maxAge: Long = DEFAULT_MAX
         val currentTime = now.time
         val log = Log("$nowStr : $level - $message", currentTime, level)
         logs.add(log)
-        logs.removeIf { l -> l.time + maxAge < currentTime }
+        logs.removeAll { it.time + maxAge < currentTime }
     }
 
     private fun logThrowable(level: LogLevel, message: String, throwable: Throwable) {

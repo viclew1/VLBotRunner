@@ -1,10 +1,10 @@
 package fr.lewon.bot.runner.lifecycle.bot
 
-enum class BotState {
+enum class BotState(vararg val operations: BotLifeCycleOperation) {
 
-    PENDING,
-    ACTIVE,
-    STOPPED,
-    CRASHED
+    PENDING(BotLifeCycleOperation.START),
+    ACTIVE(BotLifeCycleOperation.STOP),
+    STOPPED(BotLifeCycleOperation.START),
+    CRASHED(BotLifeCycleOperation.STOP, BotLifeCycleOperation.START)
 
 }

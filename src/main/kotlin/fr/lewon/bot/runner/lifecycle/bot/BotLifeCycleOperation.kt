@@ -1,19 +1,19 @@
 package fr.lewon.bot.runner.lifecycle.bot
 
-import fr.lewon.bot.runner.lifecycle.ILifeCycleOperation
-import fr.lewon.bot.runner.lifecycle.bot.BotState.*
+import fr.lewon.bot.runner.Bot
+import fr.lewon.bot.runner.errors.InvalidOperationException
 
-enum class BotLifeCycleOperation(private val to: BotState, private vararg val from: BotState) : ILifeCycleOperation<BotState> {
+enum class BotLifeCycleOperation(private val operation: (Bot) -> Unit) {
 
-    START(ACTIVE, PENDING, STOPPED, CRASHED),
-    STOP(STOPPED, ACTIVE, CRASHED),
-    CRASH(CRASHED);
+    START({ it.start() }),
+    STOP({ it.stop() });
 
-    override fun getTo(): BotState {
-        return to
+    @Throws(InvalidOperationException::class)
+    fun run(bot: Bot) {
+        if (!bot.state.operations.contains(this)) {
+            throw InvalidOperationException(name, bot.state.name)
+        }
+        operation.invoke(bot)
     }
 
-    override fun getFrom(): List<BotState> {
-        return listOf(*from)
-    }
 }

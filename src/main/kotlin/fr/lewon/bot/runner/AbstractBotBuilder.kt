@@ -28,7 +28,7 @@ abstract class AbstractBotBuilder(botPropertyDescriptors: List<BotPropertyDescri
     @Throws(InvalidBotPropertyValueException::class, MissingBotPropertyException::class)
     fun buildBot(login: String, password: String, properties: Map<String, String?>): Bot {
         val botPropertyStore = botPropertyParser.parseParams(properties, this.botPropertyDescriptors)
-        return Bot(botPropertyStore, { b -> this.getInitialTasks(b) }, botOperations, buildSessionManager(login, password))
+        return Bot(botPropertyStore, { b -> this.getInitialTasks(b) }, buildSessionManager(login, password))
     }
 
     protected abstract fun buildSessionManager(login: String, password: String): AbstractSessionManager

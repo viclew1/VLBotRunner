@@ -1,7 +1,6 @@
 package fr.lewon.bot.runner.bot.task
 
 import fr.lewon.bot.runner.Bot
-import fr.lewon.bot.runner.lifecycle.task.TaskLifeCycleOperation
 import fr.lewon.bot.runner.lifecycle.task.TaskState
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.Trigger
@@ -18,7 +17,7 @@ abstract class BotTask @JvmOverloads constructor(val name: String, val bot: Bot,
             this.taskResult = this.doExecute(this.bot)
         } catch (e: Exception) {
             LOGGER.error("An error occurred while processing [${this.javaClass.canonicalName}]", e)
-            bot.crash()
+            bot.crash(e.message)
         }
 
     }
@@ -39,18 +38,19 @@ abstract class BotTask @JvmOverloads constructor(val name: String, val bot: Bot,
         }
         try {
             if (this.state == TaskState.PENDING) {
-                this.state = TaskLifeCycleOperation.START.getResultingState(this.state)
+                this.state = TaskState.ACTIVE
                 return Date(System.currentTimeMillis() + initialDelayMillis)
             }
             this.taskResult?.tasksToCreate
                     ?.let { bot.startTasks(it) }
+            
             this.taskResult?.delay?.getDelayMillis()
+                    ?.takeIf { it > 0 }
                     ?.let { triggerContext.lastCompletionTime()?.time?.plus(it) }
                     ?.let { return Date(it) }
-            this.state = TaskLifeCycleOperation.STOP.getResultingState(this.state)
         } catch (e: Exception) {
             LOGGER.error("An error occurred while fetching next [${this.javaClass.canonicalName}] execution time", e)
-            bot.crash()
+            bot.crash(e.message)
         }
 
         return null
