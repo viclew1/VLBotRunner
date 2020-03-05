@@ -18,7 +18,7 @@ import kotlin.collections.ArrayList
  */
 class BotLogger @JvmOverloads constructor(private val maxAge: Long = DEFAULT_MAX_AGE, private val dateFormat: String = DEFAULT_DATE_FORMAT) {
 
-    private val logs: MutableList<Log> = Collections.synchronizedList(ArrayList())
+    private val logs: MutableList<Log> = ArrayList()
 
     /**
      * @return A copy of the stored logs
@@ -37,6 +37,7 @@ class BotLogger @JvmOverloads constructor(private val maxAge: Long = DEFAULT_MAX
      * @param level
      * @param message
      */
+    @Synchronized
     fun log(level: LogLevel, message: String) {
         val now = Date()
         val sdf = SimpleDateFormat(dateFormat)
