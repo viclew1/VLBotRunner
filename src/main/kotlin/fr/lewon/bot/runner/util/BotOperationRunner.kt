@@ -22,7 +22,7 @@ class BotOperationRunner private constructor() {
         try {
             return botOperation.run(bot, paramStore)
         } catch (e: Exception) {
-            throw BotOperationExecutionException(botOperation, e)
+            throw BotOperationExecutionException(botOperation, cause = e)
         }
 
     }

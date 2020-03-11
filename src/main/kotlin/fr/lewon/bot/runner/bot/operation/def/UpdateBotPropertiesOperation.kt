@@ -31,6 +31,8 @@ class UpdateBotPropertiesOperation : BotOperation("Update bot properties") {
                 e.setValue(paramsPropertyStore.getByKey(e.key.key))
             }
         }
-        return OperationResult(true, "Bot properties updated", bot.botPropertyStore)
+        return OperationResult(true, "Bot properties updated", bot.botPropertyStore
+                .map { it.key.key to it.value }
+                .toMap())
     }
 }
