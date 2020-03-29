@@ -1,8 +1,6 @@
 package fr.lewon.bot.runner
 
 import fr.lewon.bot.runner.bot.operation.BotOperation
-import fr.lewon.bot.runner.bot.operation.def.ReadBotPropertiesOperation
-import fr.lewon.bot.runner.bot.operation.def.UpdateBotPropertiesOperation
 import fr.lewon.bot.runner.bot.props.BotPropertyDescriptor
 import fr.lewon.bot.runner.bot.props.BotPropertyType
 import fr.lewon.bot.runner.bot.task.BotTask
@@ -12,17 +10,11 @@ import fr.lewon.bot.runner.session.AbstractSessionManager
 import fr.lewon.bot.runner.util.BeanUtil
 import fr.lewon.bot.runner.util.BotPropertyParser
 
-abstract class AbstractBotBuilder(botPropertyDescriptors: List<BotPropertyDescriptor>, botOperations: List<BotOperation> = emptyList()) {
+abstract class AbstractBotBuilder(botPropertyDescriptors: List<BotPropertyDescriptor>, val botOperations: List<BotOperation> = emptyList()) {
 
     val botPropertyDescriptors: List<BotPropertyDescriptor> = listOf(
             BotPropertyDescriptor(key = "auto_restart_timer", type = BotPropertyType.INTEGER, defaultValue = null, description = "Amount of minutes before restarting a bot on crash. If null, the bot doesn't restart", isNeeded = false, isNullable = true),
             *botPropertyDescriptors.toTypedArray()
-    )
-
-    val botOperations: List<BotOperation> = listOf(
-            ReadBotPropertiesOperation(),
-            UpdateBotPropertiesOperation(),
-            *botOperations.toTypedArray()
     )
 
     @Throws(InvalidBotPropertyValueException::class, MissingBotPropertyException::class)

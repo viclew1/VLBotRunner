@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class BotOperationRunner private constructor() {
+class BotOperationRunner {
 
     @Autowired
     private lateinit var botPropertyParser: BotPropertyParser
@@ -22,7 +22,7 @@ class BotOperationRunner private constructor() {
         try {
             return botOperation.run(bot, paramStore)
         } catch (e: Exception) {
-            throw BotOperationExecutionException(botOperation, cause = e)
+            throw BotOperationExecutionException(botOperation, cause = e, message = e.message)
         }
 
     }

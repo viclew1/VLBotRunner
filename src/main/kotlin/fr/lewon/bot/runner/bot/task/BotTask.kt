@@ -7,10 +7,12 @@ import org.springframework.scheduling.Trigger
 import org.springframework.scheduling.TriggerContext
 import java.util.*
 
-abstract class BotTask @JvmOverloads constructor(val name: String, val bot: Bot, val initialDelayMillis: Long = 0) : Trigger, Runnable {
+abstract class BotTask @JvmOverloads constructor(val name: String, val bot: Bot, private val initialDelayMillis: Long = 0) : Trigger, Runnable {
     var state = TaskState.PENDING
         private set
     private var taskResult: TaskResult? = null
+    var executionDate: Date? = null
+        private set
 
     override fun run() {
         try {
@@ -33,6 +35,11 @@ abstract class BotTask @JvmOverloads constructor(val name: String, val bot: Bot,
     protected abstract fun doExecute(bot: Bot): TaskResult
 
     override fun nextExecutionTime(triggerContext: TriggerContext): Date? {
+        executionDate = defineExecutionDate(triggerContext)
+        return executionDate
+    }
+
+    private fun defineExecutionDate(triggerContext: TriggerContext): Date? {
         if (this.state == TaskState.CRASHED) {
             return null
         }
@@ -43,7 +50,7 @@ abstract class BotTask @JvmOverloads constructor(val name: String, val bot: Bot,
             }
             this.taskResult?.tasksToCreate
                     ?.let { bot.startTasks(it) }
-            
+
             this.taskResult?.delay?.getDelayMillis()
                     ?.takeIf { it > 0 }
                     ?.let { triggerContext.lastCompletionTime()?.time?.plus(it) }

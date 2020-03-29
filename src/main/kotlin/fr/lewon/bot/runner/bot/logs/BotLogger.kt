@@ -3,30 +3,26 @@ package fr.lewon.bot.runner.bot.logs
 import org.slf4j.LoggerFactory
 import java.io.PrintWriter
 import java.io.StringWriter
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import java.util.stream.Collectors
 import kotlin.collections.ArrayList
 
 /**
- * A logger whose goal is to store the logs associated to an [AbstractBot] execution. Offers the following functionalities : <br></br>
+ * A logger whose goal is to store the logs associated to a [fr.lewon.bot.runner.Bot] execution. Offers the following features : <br></br>
  *
  *  * Defining a size determining the amount of logs that can be stored in this logger
  *  * Log by [level][LogLevel] of trace importance
  *
  */
-class BotLogger @JvmOverloads constructor(private val maxAge: Long = DEFAULT_MAX_AGE, private val dateFormat: String = DEFAULT_DATE_FORMAT) {
+class BotLogger @JvmOverloads constructor(private val maxAge: Long = DEFAULT_MAX_AGE) {
 
-    private val logs: MutableList<Log> = ArrayList()
+    private val logs: LinkedList<Log> = LinkedList()
 
     /**
      * @return A copy of the stored logs
      */
-    fun getLogs(): List<String> {
-        return logs.stream()
-                .map { log -> log.message }
-                .collect(Collectors.toList())
+    fun getLogs(): List<Log> {
+        return ArrayList(logs)
     }
 
     /**
@@ -40,12 +36,10 @@ class BotLogger @JvmOverloads constructor(private val maxAge: Long = DEFAULT_MAX
     @Synchronized
     fun log(level: LogLevel, message: String) {
         val now = Date()
-        val sdf = SimpleDateFormat(dateFormat)
-        val nowStr = sdf.format(now)
         LOGGER.debug(message)
         val currentTime = now.time
-        val log = Log("$nowStr : $level - $message", currentTime, level)
-        logs.add(log)
+        val log = Log(message, currentTime, level)
+        logs.addFirst(log)
         logs.removeAll { it.time + maxAge < currentTime }
     }
 
@@ -153,7 +147,6 @@ class BotLogger @JvmOverloads constructor(private val maxAge: Long = DEFAULT_MAX
     companion object {
         private val LOGGER = LoggerFactory.getLogger(BotLogger::class.java)
         private val DEFAULT_MAX_AGE: Long = TimeUnit.DAYS.toMillis(1L)
-        private const val DEFAULT_DATE_FORMAT = "yyyy-MM-dd_HH:mm:ss.SSS"
     }
 
 }

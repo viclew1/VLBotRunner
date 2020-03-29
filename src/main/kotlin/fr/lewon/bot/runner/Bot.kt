@@ -35,8 +35,8 @@ class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenera
         (botPropertyStore.getByKey("auto_restart_timer") as Int?)
                 ?.toLong()
                 ?.let {
-                    startTask(RestartBotTask(this, it * 1000))
-                    logger.error("Trying to restart bot in $it seconds")
+                    startTask(RestartBotTask(this, it * 1000 * 60))
+                    logger.error("Trying to restart bot in $it minutes")
                 }
     }
 

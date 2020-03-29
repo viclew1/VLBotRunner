@@ -12,22 +12,21 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import org.springframework.scheduling.config.ScheduledTaskRegistrar
 
-import java.util.concurrent.Executor
 
 @Configuration
 @EnableAsync
 @EnableScheduling
 open class ScheduleConfig : AsyncConfigurer, SchedulingConfigurer {
 
-    @Value("\${bot.task.scheduler.pool.size:10}")
+    @Value("\${bot.task.scheduler.pool.size:5}")
     private var poolSize: Int = 0
 
     @Autowired
     private lateinit var threadPoolTaskScheduler: ThreadPoolTaskScheduler
 
     @Bean
-    override fun getAsyncExecutor(): Executor? {
-        this.threadPoolTaskScheduler.setPoolSize(this.poolSize)
+    override fun getAsyncExecutor(): ConcurrentTaskExecutor {
+        this.threadPoolTaskScheduler.poolSize = this.poolSize
         return ConcurrentTaskExecutor(this.threadPoolTaskScheduler)
     }
 
