@@ -33,9 +33,8 @@ class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenera
         this.state = BotState.CRASHED
         message?.let { logger.error(" BOT CRASHED ! Reason : $message") }
         (botPropertyStore.getByKey("auto_restart_timer") as Int?)
-                ?.toLong()
                 ?.let {
-                    startTask(RestartBotTask(this, it * 1000 * 60))
+                    startTask(RestartBotTask(this, it.toLong() * 1000 * 60))
                     logger.error("Trying to restart bot in $it minutes")
                 }
     }

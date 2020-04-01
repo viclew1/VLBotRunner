@@ -7,8 +7,7 @@ import fr.lewon.bot.runner.lifecycle.bot.BotLifeCycleOperation
 
 class RestartBotTask(bot: Bot, initialDelayMillis: Long) : BotTask("Restart bot", bot, initialDelayMillis) {
 
-    @Throws(Exception::class)
-    override fun doExecute(bot: Bot): TaskResult {
+    override fun doExecute(): TaskResult {
         BotLifeCycleOperation.START.run(bot)
         return TaskResult()
     }

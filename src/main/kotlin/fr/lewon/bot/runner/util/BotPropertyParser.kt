@@ -32,6 +32,7 @@ class BotPropertyParser {
         return botPropertyStore
     }
 
+    @Suppress("UNCHECKED_CAST")
     @Throws(InvalidBotPropertyValueException::class)
     fun <T> parse(descriptor: BotPropertyDescriptor, value: String?): T? {
         if (value.isNullOrBlank()) {

@@ -4,6 +4,8 @@ enum class ResultType {
 
     STRING,
     OBJECT,
+    LIST,
+    IMAGE_URL,
     GRAPH;
 
 }

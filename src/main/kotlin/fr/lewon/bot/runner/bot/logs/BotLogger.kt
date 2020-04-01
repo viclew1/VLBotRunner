@@ -14,7 +14,7 @@ import kotlin.collections.ArrayList
  *  * Log by [level][LogLevel] of trace importance
  *
  */
-class BotLogger @JvmOverloads constructor(private val maxAge: Long = DEFAULT_MAX_AGE) {
+class BotLogger(private val parentLogger: BotLogger? = null, private val maxAge: Long = DEFAULT_MAX_AGE) {
 
     private val logs: LinkedList<Log> = LinkedList()
 
@@ -39,8 +39,14 @@ class BotLogger @JvmOverloads constructor(private val maxAge: Long = DEFAULT_MAX
         LOGGER.debug(message)
         val currentTime = now.time
         val log = Log(message, currentTime, level)
+        doLog(log, currentTime)
+    }
+
+    @Synchronized
+    fun doLog(log: Log, time: Long) {
         logs.addFirst(log)
-        logs.removeAll { it.time + maxAge < currentTime }
+        logs.removeAll { it.time + maxAge < time }
+        parentLogger?.doLog(log, time)
     }
 
     private fun logThrowable(level: LogLevel, message: String, throwable: Throwable) {

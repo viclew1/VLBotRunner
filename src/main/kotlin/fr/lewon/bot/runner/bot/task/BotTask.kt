@@ -1,24 +1,25 @@
 package fr.lewon.bot.runner.bot.task
 
 import fr.lewon.bot.runner.Bot
+import fr.lewon.bot.runner.bot.logs.BotLogger
 import fr.lewon.bot.runner.lifecycle.task.TaskState
-import org.slf4j.LoggerFactory
 import org.springframework.scheduling.Trigger
 import org.springframework.scheduling.TriggerContext
 import java.util.*
 
-abstract class BotTask @JvmOverloads constructor(val name: String, val bot: Bot, private val initialDelayMillis: Long = 0) : Trigger, Runnable {
+abstract class BotTask(val name: String, val bot: Bot, private val initialDelayMillis: Long = 0) : Trigger, Runnable {
     var state = TaskState.PENDING
         private set
     private var taskResult: TaskResult? = null
     var executionDate: Date? = null
         private set
+    val logger = BotLogger(bot.logger)
 
     override fun run() {
         try {
-            this.taskResult = this.doExecute(this.bot)
+            this.taskResult = this.doExecute()
         } catch (e: Exception) {
-            LOGGER.error("An error occurred while processing [${this.javaClass.canonicalName}]", e)
+            logger.error("An error occurred while processing [$name]", e)
             bot.crash(e.message)
         }
 
@@ -27,15 +28,17 @@ abstract class BotTask @JvmOverloads constructor(val name: String, val bot: Bot,
     /**
      * Executes the bot task and returns the delay until next execution in millis
      *
-     * @param bot
      * @return
      * @throws Exception
      */
     @Throws(Exception::class)
-    protected abstract fun doExecute(bot: Bot): TaskResult
+    protected abstract fun doExecute(): TaskResult
 
     override fun nextExecutionTime(triggerContext: TriggerContext): Date? {
         executionDate = defineExecutionDate(triggerContext)
+        if (executionDate == null) {
+            bot.cancelTasks(listOf(this))
+        }
         return executionDate
     }
 
@@ -56,7 +59,7 @@ abstract class BotTask @JvmOverloads constructor(val name: String, val bot: Bot,
                     ?.let { triggerContext.lastCompletionTime()?.time?.plus(it) }
                     ?.let { return Date(it) }
         } catch (e: Exception) {
-            LOGGER.error("An error occurred while fetching next [${this.javaClass.canonicalName}] execution time", e)
+            logger.error("An error occurred while fetching next [$name] execution time", e)
             bot.crash(e.message)
         }
 
@@ -65,9 +68,5 @@ abstract class BotTask @JvmOverloads constructor(val name: String, val bot: Bot,
 
     fun crash() {
         this.state = TaskState.CRASHED
-    }
-
-    companion object {
-        private val LOGGER = LoggerFactory.getLogger(BotTask::class.java)
     }
 }
