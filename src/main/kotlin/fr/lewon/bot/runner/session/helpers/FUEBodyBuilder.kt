@@ -69,7 +69,7 @@ class FUEBodyBuilder {
 
     private fun getElementValue(field: Field, refObj: Any): Any? {
         return try {
-            val accessible = field.canAccess(refObj)
+            val accessible = field.isAccessible
             field.isAccessible = true
             val `val` = field[refObj]
             field.isAccessible = accessible
