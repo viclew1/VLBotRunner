@@ -1,11 +1,12 @@
 package fr.lewon.bot.runner.session
 
+import fr.lewon.bot.runner.bot.props.BotPropertyStore
 import org.springframework.web.reactive.function.client.WebClient
 
 /**
  * Manages the session between the host and the client.
  */
-abstract class AbstractSessionManager(private val login: String, private val password: String, private val sessionDurability: Long, private val webClientBuilder: WebClient.Builder) {
+abstract class AbstractSessionManager(private val login: String, private val loginPropertyStore: BotPropertyStore, private val sessionDurability: Long, private val webClientBuilder: WebClient.Builder) {
 
     private lateinit var webClient: WebClient
     private lateinit var sessionObject: Any
@@ -30,7 +31,7 @@ abstract class AbstractSessionManager(private val login: String, private val pas
         val currentTimeMillis = System.currentTimeMillis()
         if (this.forceRefresh || this.lastGenerationTime + this.sessionDurability <= currentTimeMillis) {
             webClient = webClientBuilder.build()
-            this.sessionObject = this.generateSessionObject(webClient, this.login, this.password)
+            this.sessionObject = this.generateSessionObject(webClient, this.login, this.loginPropertyStore)
             this.lastGenerationTime = currentTimeMillis
             this.forceRefresh = false
         }
@@ -48,11 +49,11 @@ abstract class AbstractSessionManager(private val login: String, private val pas
      *
      * @param webClient
      * @param login
-     * @param password
+     * @param loginPropertyStore
      * @return
      * @throws Exception
      */
     @Throws(Exception::class)
-    protected abstract fun generateSessionObject(webClient: WebClient, login: String, password: String): Any
+    protected abstract fun generateSessionObject(webClient: WebClient, login: String, loginPropertyStore: BotPropertyStore): Any
 
 }
