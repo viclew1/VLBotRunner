@@ -5,12 +5,12 @@ import org.springframework.web.reactive.function.client.WebClient
 /**
  * Manages the session between the host and the client.
  */
-abstract class AbstractSessionManager(val login: String, private val password: String, private val sessionDurability: Long, private val webClientBuilder: WebClient.Builder) {
+abstract class AbstractSessionManager(private val login: String, private val password: String, private val sessionDurability: Long, private val webClientBuilder: WebClient.Builder) {
 
     private lateinit var webClient: WebClient
     private lateinit var sessionObject: Any
     private var lastGenerationTime: Long = -sessionDurability
-    private var forceRefresh: Boolean = false
+    private var forceRefresh: Boolean = true
 
     /**
      * Returns the user session. If no session has been generated, or if the last generated session is older than the session
@@ -19,16 +19,9 @@ abstract class AbstractSessionManager(val login: String, private val password: S
      * @return
      * @throws Exception
      */
-    @Throws(Exception::class)
-    fun getSession(): Any {
+    fun buildSessionHolder(): SessionHolder {
         initAll()
-        return this.sessionObject
-    }
-
-    @Throws(Exception::class)
-    fun getWebClient(): WebClient {
-        initAll()
-        return webClient
+        return SessionHolder(sessionObject, webClient)
     }
 
     @Synchronized
