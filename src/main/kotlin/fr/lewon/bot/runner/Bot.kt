@@ -14,6 +14,7 @@ class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenera
     private val tasks = ArrayList<BotTask>()
     var state = BotState.PENDING
         private set
+    val sharedProperties = HashMap<String, Any>()
 
     fun start() {
         cancelTasks(tasks)
@@ -24,6 +25,7 @@ class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenera
 
     fun stop() {
         cancelTasks(tasks)
+        sharedProperties.clear()
         this.state = BotState.STOPPED
     }
 
