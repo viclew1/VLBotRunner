@@ -36,7 +36,7 @@ class BotLogger(private val parentLogger: BotLogger? = null, private val maxAge:
     @Synchronized
     fun log(level: LogLevel, message: String) {
         val now = Date()
-        LOGGER.debug(message)
+        LOGGER.info(message)
         val currentTime = now.time
         val log = Log(message, currentTime, level)
         doLog(log, currentTime)
