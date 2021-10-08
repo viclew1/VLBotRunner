@@ -25,12 +25,6 @@ abstract class BotTask(val name: String, val bot: Bot, private val initialDelayM
 
     }
 
-    /**
-     * Executes the bot task and returns the delay until next execution in millis
-     *
-     * @return
-     * @throws Exception
-     */
     @Throws(Exception::class)
     protected abstract fun doExecute(): TaskResult
 
@@ -52,12 +46,12 @@ abstract class BotTask(val name: String, val bot: Bot, private val initialDelayM
                 return Date(System.currentTimeMillis() + initialDelayMillis)
             }
             this.taskResult?.tasksToCreate
-                    ?.let { bot.startTasks(it) }
+                ?.let { bot.startTasks(it) }
 
             this.taskResult?.delay?.getDelayMillis()
-                    ?.takeIf { it > 0 }
-                    ?.let { triggerContext.lastCompletionTime()?.time?.plus(it) }
-                    ?.let { return Date(it) }
+                ?.takeIf { it > 0 }
+                ?.let { triggerContext.lastCompletionTime()?.time?.plus(it) }
+                ?.let { return Date(it) }
         } catch (e: Exception) {
             logger.error("An error occurred while fetching next [$name] execution time", e)
             bot.crash(e.message)
