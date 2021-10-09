@@ -41,7 +41,7 @@ class Bot(
         message?.let { logger.error(" BOT CRASHED ! Reason : $message") }
         (botPropertyStore.getByKey("auto_restart_timer") as Int?)
             ?.let {
-                startTask(RestartBotTask(this, it.toLong() * 1000 * 60))
+                startTask(RestartBotTask(this, it * 1000L * 60))
                 logger.error("Trying to restart bot in $it minutes")
             }
     }
