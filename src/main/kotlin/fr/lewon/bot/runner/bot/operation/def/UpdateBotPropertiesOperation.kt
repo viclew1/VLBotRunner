@@ -11,20 +11,20 @@ class UpdateBotPropertiesOperation : BotOperation("Update bot properties") {
 
     override fun getNeededProperties(bot: Bot): List<BotPropertyDescriptor> {
         return bot.botPropertyStore.entries.stream()
-                .map { bpd ->
-                    BotPropertyDescriptor(
-                            bpd.key.key,
-                            bpd.key.type,
-                            bpd.value,
-                            bpd.key.description,
-                            false,
-                            bpd.key.isNullable,
-                            bpd.key.acceptedValues)
-                }
-                .toList()
+            .map {
+                BotPropertyDescriptor(
+                    it.key.key,
+                    it.key.type,
+                    it.value,
+                    it.key.description,
+                    false,
+                    it.key.isNullable,
+                    it.key.acceptedValues
+                )
+            }
+            .toList()
     }
 
-    @Throws(Exception::class)
     override fun run(bot: Bot, paramsPropertyStore: BotPropertyStore): OperationResult {
         for (e in bot.botPropertyStore.entries) {
             if (paramsPropertyStore.containsByKey(e.key.key)) {
@@ -32,7 +32,7 @@ class UpdateBotPropertiesOperation : BotOperation("Update bot properties") {
             }
         }
         return OperationResult.ofObject(true, "Bot properties updated", bot.botPropertyStore
-                .map { it.key.key to it.value }
-                .toMap())
+            .map { it.key.key to it.value }
+            .toMap())
     }
 }

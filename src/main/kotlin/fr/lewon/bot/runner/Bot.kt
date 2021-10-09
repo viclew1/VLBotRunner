@@ -9,7 +9,12 @@ import fr.lewon.bot.runner.session.AbstractSessionManager
 import fr.lewon.bot.runner.util.BeanUtil
 import fr.lewon.bot.runner.util.BotTaskScheduler
 
-class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenerator: (Bot) -> List<BotTask>, val sessionManager: AbstractSessionManager, val logger: BotLogger = BotLogger()) {
+class Bot(
+    val botPropertyStore: BotPropertyStore,
+    private val initialTasksGenerator: (Bot) -> List<BotTask>,
+    val sessionManager: AbstractSessionManager,
+    val logger: BotLogger = BotLogger()
+) {
 
     private val tasks = ArrayList<BotTask>()
     var state = BotState.PENDING
@@ -35,10 +40,10 @@ class Bot(val botPropertyStore: BotPropertyStore, private val initialTasksGenera
         this.state = BotState.CRASHED
         message?.let { logger.error(" BOT CRASHED ! Reason : $message") }
         (botPropertyStore.getByKey("auto_restart_timer") as Int?)
-                ?.let {
-                    startTask(RestartBotTask(this, it.toLong() * 1000 * 60))
-                    logger.error("Trying to restart bot in $it minutes")
-                }
+            ?.let {
+                startTask(RestartBotTask(this, it.toLong() * 1000 * 60))
+                logger.error("Trying to restart bot in $it minutes")
+            }
     }
 
     fun getTasks(): List<BotTask> {

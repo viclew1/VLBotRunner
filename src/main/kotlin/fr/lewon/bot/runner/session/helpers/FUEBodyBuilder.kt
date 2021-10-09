@@ -52,8 +52,8 @@ class FUEBodyBuilder {
 
     private fun addBodyElement(elements: MutableList<BodyElement>, elementName: String, elementValue: Any) {
         if (MutableCollection::class.java.isInstance(elementValue)) {
-            val elementValCollec = elementValue as Collection<*>
-            for (elem in elementValCollec) {
+            val elementValueCollection = elementValue as Collection<*>
+            for (elem in elementValueCollection) {
                 elements.add(BodyElement(elementName, elem.toString()))
             }
         } else {
@@ -68,17 +68,11 @@ class FUEBodyBuilder {
     }
 
     private fun getElementValue(field: Field, refObj: Any): Any? {
-        return try {
-            val accessible = field.isAccessible
-            field.isAccessible = true
-            val `val` = field[refObj]
-            field.isAccessible = accessible
-            `val`
-        } catch (e: IllegalArgumentException) {
-            null
-        } catch (e: IllegalAccessException) {
-            null
-        }
+        val accessible = field.isAccessible
+        field.isAccessible = true
+        val fieldValue = field[refObj]
+        field.isAccessible = accessible
+        return fieldValue
     }
 
     private fun getAllDeclaredFields(refClass: Class<*>): List<Field> {
@@ -92,5 +86,5 @@ class FUEBodyBuilder {
         return fields
     }
 
-    private inner class BodyElement internal constructor(val label: String, val value: String)
+    private class BodyElement(val label: String, val value: String)
 }

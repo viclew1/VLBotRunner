@@ -8,7 +8,6 @@ enum class BotLifeCycleOperation(private val operation: (Bot) -> Unit) {
     START({ it.start() }),
     STOP({ it.stop() });
 
-    @Throws(InvalidOperationException::class)
     fun run(bot: Bot) {
         if (!bot.state.operations.contains(this)) {
             throw InvalidOperationException(name, bot.state.name)

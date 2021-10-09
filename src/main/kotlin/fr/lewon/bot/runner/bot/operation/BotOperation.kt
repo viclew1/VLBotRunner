@@ -8,7 +8,6 @@ abstract class BotOperation(val label: String) {
 
     abstract fun getNeededProperties(bot: Bot): List<BotPropertyDescriptor>
 
-    @Throws(Exception::class)
     abstract fun run(bot: Bot, paramsPropertyStore: BotPropertyStore): OperationResult
 
 }

@@ -13,10 +13,9 @@ class ReadBotPropertiesOperation : BotOperation("Read bot properties") {
         return ArrayList()
     }
 
-    @Throws(Exception::class)
     override fun run(bot: Bot, paramsPropertyStore: BotPropertyStore): OperationResult {
         return OperationResult.ofObject(true, "Bot properties retrieved", bot.botPropertyStore
-                .map { it.key.key to it.value }
-                .toMap())
+            .map { it.key.key to it.value }
+            .toMap())
     }
 }

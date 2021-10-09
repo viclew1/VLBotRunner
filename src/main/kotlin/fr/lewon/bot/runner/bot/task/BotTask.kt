@@ -25,7 +25,6 @@ abstract class BotTask(val name: String, val bot: Bot, private val initialDelayM
 
     }
 
-    @Throws(Exception::class)
     protected abstract fun doExecute(): TaskResult
 
     override fun nextExecutionTime(triggerContext: TriggerContext): Date? {

@@ -4,8 +4,6 @@ import fr.lewon.bot.runner.Bot
 import fr.lewon.bot.runner.bot.operation.BotOperation
 import fr.lewon.bot.runner.bot.operation.OperationResult
 import fr.lewon.bot.runner.errors.BotOperationExecutionException
-import fr.lewon.bot.runner.errors.InvalidBotPropertyValueException
-import fr.lewon.bot.runner.errors.MissingBotPropertyException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -15,7 +13,6 @@ class BotOperationRunner {
     @Autowired
     private lateinit var botPropertyParser: BotPropertyParser
 
-    @Throws(InvalidBotPropertyValueException::class, BotOperationExecutionException::class, MissingBotPropertyException::class)
     fun runOperation(botOperation: BotOperation, bot: Bot, params: Map<String, String?>): OperationResult {
 
         val paramStore = this.botPropertyParser.parseParams(params, botOperation.getNeededProperties(bot))

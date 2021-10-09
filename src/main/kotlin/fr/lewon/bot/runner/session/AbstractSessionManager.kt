@@ -6,7 +6,12 @@ import org.springframework.web.reactive.function.client.WebClient
 /**
  * Manages the session between the host and the client.
  */
-abstract class AbstractSessionManager(private val login: String, private val loginPropertyStore: BotPropertyStore, private val sessionDurability: Long, private val webClientBuilder: WebClient.Builder) {
+abstract class AbstractSessionManager(
+    private val login: String,
+    private val loginPropertyStore: BotPropertyStore,
+    private val sessionDurability: Long,
+    private val webClientBuilder: WebClient.Builder
+) {
 
     private lateinit var webClient: WebClient
     private lateinit var sessionObject: Any
@@ -26,7 +31,6 @@ abstract class AbstractSessionManager(private val login: String, private val log
     }
 
     @Synchronized
-    @Throws(Exception::class)
     private fun initAll() {
         val currentTimeMillis = System.currentTimeMillis()
         if (this.forceRefresh || this.lastGenerationTime + this.sessionDurability <= currentTimeMillis) {
@@ -53,7 +57,10 @@ abstract class AbstractSessionManager(private val login: String, private val log
      * @return
      * @throws Exception
      */
-    @Throws(Exception::class)
-    protected abstract fun generateSessionObject(webClient: WebClient, login: String, loginPropertyStore: BotPropertyStore): Any
+    protected abstract fun generateSessionObject(
+        webClient: WebClient,
+        login: String,
+        loginPropertyStore: BotPropertyStore
+    ): Any
 
 }

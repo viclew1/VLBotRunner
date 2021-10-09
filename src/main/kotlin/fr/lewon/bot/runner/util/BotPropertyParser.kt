@@ -17,8 +17,10 @@ class BotPropertyParser {
      * @throws InvalidBotPropertyValueException
      * @throws MissingBotPropertyException
      */
-    @Throws(InvalidBotPropertyValueException::class, MissingBotPropertyException::class)
-    fun parseParams(params: Map<String, String?>, targetBotPropertyDescriptors: List<BotPropertyDescriptor>): BotPropertyStore {
+    fun parseParams(
+        params: Map<String, String?>,
+        targetBotPropertyDescriptors: List<BotPropertyDescriptor>
+    ): BotPropertyStore {
         val botPropertyStore = BotPropertyStore()
         for (propertyDescriptor in targetBotPropertyDescriptors) {
             if (params.containsKey(propertyDescriptor.key)) {
@@ -33,7 +35,6 @@ class BotPropertyParser {
     }
 
     @Suppress("UNCHECKED_CAST")
-    @Throws(InvalidBotPropertyValueException::class)
     fun <T> parse(descriptor: BotPropertyDescriptor, value: String?): T? {
         if (value.isNullOrBlank()) {
             if (descriptor.isNullable) {
