@@ -8,7 +8,7 @@ import java.net.URLEncoder
  * Stands for form url encoded. Designs a body that's built the same way as query string parameters, being : <br></br>
  * first_param=first_value&second_param=second_value
  */
-class FUEBodyBuilder {
+object FUEBodyBuilder {
     /**
      * Generates a body designed to be used in an HTTP request. Bases itself on the [com.fasterxml.jackson.annotation.JsonProperty] annotations found
      * in the class of the passed object. Refer to these to see how they work.

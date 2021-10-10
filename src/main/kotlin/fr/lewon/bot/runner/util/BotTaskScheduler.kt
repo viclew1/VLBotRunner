@@ -32,7 +32,6 @@ object BotTaskScheduler {
         if (nextExecutionDate != null) {
             val timer = timerByBot[task.bot] ?: error("No timer registered for this bot")
             timer.schedule(buildTaskTimer(task), nextExecutionDate.time - System.currentTimeMillis())
-            println(task.name + " : " + (nextExecutionDate.time - System.currentTimeMillis()) / 1000)
         } else {
             task.bot.tasks.remove(task)
         }
