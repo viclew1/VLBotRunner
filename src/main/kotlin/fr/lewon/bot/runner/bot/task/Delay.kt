@@ -4,8 +4,11 @@ import java.util.concurrent.TimeUnit
 
 class Delay(private val amount: Long, private val timeUnit: TimeUnit = TimeUnit.MILLISECONDS) {
 
-    fun getDelayMillis(): Long {
-        return this.timeUnit.toMillis(this.amount);
+    fun getDelayMillis(): Long? {
+        if (amount == NEVER.amount) {
+            return null
+        }
+        return this.timeUnit.toMillis(this.amount)
     }
 
     companion object {

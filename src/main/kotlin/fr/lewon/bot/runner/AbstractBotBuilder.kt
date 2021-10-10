@@ -6,7 +6,6 @@ import fr.lewon.bot.runner.bot.props.BotPropertyStore
 import fr.lewon.bot.runner.bot.props.BotPropertyType
 import fr.lewon.bot.runner.bot.task.BotTask
 import fr.lewon.bot.runner.session.AbstractSessionManager
-import fr.lewon.bot.runner.util.BeanUtil
 import fr.lewon.bot.runner.util.BotPropertyParser
 
 abstract class AbstractBotBuilder(
@@ -28,8 +27,8 @@ abstract class AbstractBotBuilder(
     )
 
     fun buildBot(login: String, loginProperties: Map<String, String>, properties: Map<String, String?>): Bot {
-        val loginPropertyStore = botPropertyParser.parseParams(loginProperties, this.expectedLoginProperties)
-        val botPropertyStore = botPropertyParser.parseParams(properties, this.botPropertyDescriptors)
+        val loginPropertyStore = BotPropertyParser.parseParams(loginProperties, this.expectedLoginProperties)
+        val botPropertyStore = BotPropertyParser.parseParams(properties, this.botPropertyDescriptors)
         return Bot(botPropertyStore, { b -> this.getInitialTasks(b) }, buildSessionManager(login, loginPropertyStore))
     }
 
@@ -39,9 +38,5 @@ abstract class AbstractBotBuilder(
     ): AbstractSessionManager
 
     protected abstract fun getInitialTasks(bot: Bot): List<BotTask>
-
-    companion object {
-        private val botPropertyParser: BotPropertyParser = BeanUtil.getBean()
-    }
 
 }

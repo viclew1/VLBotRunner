@@ -1,32 +1,42 @@
 package fr.lewon.bot.runner.util
 
+import fr.lewon.bot.runner.Bot
 import fr.lewon.bot.runner.bot.task.BotTask
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.scheduling.TaskScheduler
-import org.springframework.stereotype.Component
-import java.util.concurrent.ScheduledFuture
+import java.util.*
+import kotlin.collections.HashMap
 
-@Component
-class BotTaskScheduler {
+object BotTaskScheduler {
 
-    @Autowired
-    private lateinit var scheduler: TaskScheduler
+    private val timerByBot = HashMap<Bot, Timer>()
 
-    private val jobsMap: MutableMap<BotTask, ScheduledFuture<*>> = HashMap()
-
-    val tasks: List<BotTask>
-        get() = ArrayList(this.jobsMap.keys)
-
-    fun cancelTaskAutoExecution(task: BotTask) {
-        this.jobsMap.remove(task)?.cancel(false)
-    }
-
-    fun cancelTaskAutoExecution(tasks: List<BotTask>) {
-        tasks.forEach { t -> this.cancelTaskAutoExecution(t) }
+    fun cancelTaskAutoExecution(bot: Bot) {
+        timerByBot.remove(bot)?.cancel()
     }
 
     fun startTaskAutoExecution(task: BotTask) {
-        this.scheduler.schedule(task, task)?.let { this.jobsMap[task] = it }
+        val timer = timerByBot.computeIfAbsent(task.bot) { Timer() }
+        timer.schedule(buildTaskTimer(task), task.initialDelayMillis)
+    }
+
+    private fun buildTaskTimer(task: BotTask): TimerTask {
+        return object : TimerTask() {
+            override fun run() {
+                task.run()
+                scheduleNextExecution(task)
+            }
+        }
+    }
+
+    private fun scheduleNextExecution(task: BotTask) {
+        val nextExecutionDate = task.executionDate
+        if (nextExecutionDate != null) {
+            val timer = timerByBot[task.bot] ?: error("No timer registered for this bot")
+            timer.schedule(buildTaskTimer(task), nextExecutionDate.time - System.currentTimeMillis())
+            println(task.name + " : " + (nextExecutionDate.time - System.currentTimeMillis()) / 1000)
+        } else {
+            task.bot.tasks.remove(task)
+        }
+
     }
 
     fun startTaskAutoExecution(tasks: List<BotTask>) {

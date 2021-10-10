@@ -3,11 +3,9 @@ package fr.lewon.bot.runner.bot.task
 import fr.lewon.bot.runner.Bot
 import fr.lewon.bot.runner.bot.logs.BotLogger
 import fr.lewon.bot.runner.lifecycle.task.TaskState
-import org.springframework.scheduling.Trigger
-import org.springframework.scheduling.TriggerContext
 import java.util.*
 
-abstract class BotTask(val name: String, val bot: Bot, private val initialDelayMillis: Long = 0) : Trigger, Runnable {
+abstract class BotTask(val name: String, val bot: Bot, val initialDelayMillis: Long = 0) {
     var state = TaskState.PENDING
         private set
     private var taskResult: TaskResult? = null
@@ -15,49 +13,25 @@ abstract class BotTask(val name: String, val bot: Bot, private val initialDelayM
         private set
     val logger = BotLogger(bot.logger)
 
-    override fun run() {
+    /**
+     * Executes the task and returns millis until next execution. Null if there is no next execution
+     */
+    fun run() {
+        if (this.state == TaskState.PENDING) {
+            this.state = TaskState.ACTIVE
+        }
         try {
             this.taskResult = this.doExecute()
+            this.taskResult?.tasksToCreate?.let { bot.startTasks(it) }
         } catch (e: Exception) {
             logger.error("An error occurred while processing [$name]", e)
             bot.crash(e.message)
         }
-
+        val delayMillis = taskResult?.delay?.getDelayMillis()
+        executionDate = delayMillis?.let { Date(System.currentTimeMillis() + it) }
     }
 
     protected abstract fun doExecute(): TaskResult
-
-    override fun nextExecutionTime(triggerContext: TriggerContext): Date? {
-        executionDate = defineExecutionDate(triggerContext)
-        if (executionDate == null) {
-            bot.cancelTasks(listOf(this))
-        }
-        return executionDate
-    }
-
-    private fun defineExecutionDate(triggerContext: TriggerContext): Date? {
-        if (this.state == TaskState.CRASHED) {
-            return null
-        }
-        try {
-            if (this.state == TaskState.PENDING) {
-                this.state = TaskState.ACTIVE
-                return Date(System.currentTimeMillis() + initialDelayMillis)
-            }
-            this.taskResult?.tasksToCreate
-                ?.let { bot.startTasks(it) }
-
-            this.taskResult?.delay?.getDelayMillis()
-                ?.takeIf { it > 0 }
-                ?.let { triggerContext.lastCompletionTime()?.time?.plus(it) }
-                ?.let { return Date(it) }
-        } catch (e: Exception) {
-            logger.error("An error occurred while fetching next [$name] execution time", e)
-            bot.crash(e.message)
-        }
-
-        return null
-    }
 
     fun crash() {
         this.state = TaskState.CRASHED

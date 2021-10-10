@@ -5,12 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.lewon</groupId>
-    <artifactId>SpringBotRunner</artifactId>
-    <version>1.0.0</version>
+    <artifactId>VLBotRunner</artifactId>
+    <version>1.0.1</version>
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>A library helping you create bots for your website and to integrate them in a Spring environment
-    </description>
-    <url>https://github.com/viclew1/SpringBotRunner</url>
+    <description>A library helping you create socket bots</description>
+    <url>https://github.com/viclew1/VLBotRunner</url>
 
     <licenses>
         <license>
@@ -18,12 +17,6 @@
             <url>http://www.opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
-
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.4.RELEASE</version>
-    </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,16 +32,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-            <scope>compile</scope>
+            <version>2.2.4.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

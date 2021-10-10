@@ -4,10 +4,8 @@ import fr.lewon.bot.runner.bot.props.BotPropertyDescriptor
 import fr.lewon.bot.runner.bot.props.BotPropertyStore
 import fr.lewon.bot.runner.errors.InvalidBotPropertyValueException
 import fr.lewon.bot.runner.errors.MissingBotPropertyException
-import org.springframework.stereotype.Component
 
-@Component
-class BotPropertyParser {
+object BotPropertyParser {
 
     /**
      * Parses the parameters in the passed Map using the passed BotPropertyDescriptors, generating a BotPropertyStore. <br>
@@ -35,7 +33,7 @@ class BotPropertyParser {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> parse(descriptor: BotPropertyDescriptor, value: String?): T? {
+    private fun <T> parse(descriptor: BotPropertyDescriptor, value: String?): T? {
         if (value.isNullOrBlank()) {
             if (descriptor.isNullable) {
                 return null
