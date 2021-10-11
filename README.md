@@ -11,10 +11,10 @@ This is your bot builder, for creating one for any account you want. You can spe
   server. Usually a password.
 - a list of [properties](#botpropertydescriptor) that will be used by your bot in any way you want, these may be of most
   primitive types and are usually used to determine you bot behavior. These will be accessible in the
-  Bot.BotPropertyStore
+  `Bot.BotPropertyStore`
 - a list of [BotOperation](#botoperation) callable on your bot
 - a list of initial [BotTask](#bottask) which will be run on your bot when calling bot.start()
-- a [session manager](#abstractsessionmanager) builder
+- an [AbstractSessionManager](#abstractsessionmanager) builder
 
 ### BotPropertyDescriptor
 
@@ -33,7 +33,7 @@ This object will describe a property used by your bot, you'll specify :
 ### AbstractSessionManager
 
 This object's goal is to manage your SessionHolder containing a session object, for example a token but anything you
-need for accessing the website you're working on, and a WebClient (A Spring HTTP tool). This object's goal is to
+need for accessing the website you're working on, and a WebClient (A Spring HTTP client). This object's goal is to
 automatically refresh it at the end of the given sessionDurability.
 
 ### BotTask
